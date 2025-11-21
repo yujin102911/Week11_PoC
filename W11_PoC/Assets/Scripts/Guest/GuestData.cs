@@ -16,8 +16,3 @@ public class GuestData : ScriptableObject
     public int paymentAmount = 100;  // 지불 금액
 }
 
-[CreateAssetMenu(fileName = "NewGuestDB", menuName = "Game/Guest Database")]
-public class GuestDatabase : ScriptableObject
-{
-    public List<GuestData> guests;
-}
