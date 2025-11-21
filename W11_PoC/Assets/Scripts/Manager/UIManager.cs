@@ -1,12 +1,20 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
 
+    [Header("Timer")]
     [SerializeField]
     private Image _timeGauge;
+    [SerializeField]
+    private TextMeshProUGUI _timerTxt;
+
+    [Header("Storage")]
+    [SerializeField]
+    private GameObject _storagePanel;
 
     private void Awake()
     {
@@ -25,9 +33,16 @@ public class UIManager : MonoBehaviour
         
     }
 
+    public void OpenStorage()
+    {
+        _storagePanel.SetActive(true);
+    }
+
     public void UpdateTimeGauge(float c, float m)
     {
         if (_timeGauge != null)
             _timeGauge.fillAmount = c / m;
+
+        _timerTxt.text = Mathf.FloorToInt(c).ToString();
     }
 }
