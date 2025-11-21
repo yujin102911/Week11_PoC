@@ -27,13 +27,14 @@ public class PlayerController : MonoBehaviour
     public LayerMask ladderMask;
     public float climbSpeed = 4f;
 
-    bool onLadder = false;
-    bool nearLadder = false;
+    public bool onLadder = false;
+    public bool nearLadder = false;
 
     [Header("Interact")]
     public LayerMask interactMask;
     public Transform interactPoint;
     public float interactRadius = 1f;
+    private ItemPickup CurrentHighlighted;
 
     void Awake()
     {
@@ -44,12 +45,52 @@ public class PlayerController : MonoBehaviour
     {
         HandleCoyoteTime();
         HandleLadderDetection();
+        FindInteract();
     }
 
     void FixedUpdate()
     {
         HandleMovement();
         HandleClimbing();
+    }
+
+    void FindInteract()
+    {
+        Vector2 pos = this.transform ?
+        (Vector2)this.transform.position :
+        (Vector2)transform.position;
+
+        // 반경 내 모든 오브젝트 탐색
+        var hits = Physics2D.OverlapCircleAll(pos, interactRadius, interactMask);
+
+        // 이번 프레임 선택될 가장 가까운 오브젝트
+        ItemPickup best = null;
+
+        float bestDist = float.MaxValue;
+
+        foreach (var hit in hits)
+        {
+            float d = Vector2.SqrMagnitude((Vector2)hit.transform.position - pos);
+            if (d < bestDist)
+            {
+                bestDist = d;
+                best = hit.GetComponent<ItemPickup>();
+            }
+        }
+
+        // ⭐ 이전 프레임의 하이라이트 제거
+        if (CurrentHighlighted != null && CurrentHighlighted != best)
+        {
+            CurrentHighlighted.RestoreAlpha();
+            CurrentHighlighted = null;
+        }
+
+        // ⭐ 새로 선택된 오브젝트 하이라이트 적용
+        if (best != null && best != CurrentHighlighted)
+        {
+            best.SetHighlight();
+            CurrentHighlighted = best;
+        }
     }
 
     // ---------------- Movement ---------------- //
@@ -60,9 +101,14 @@ public class PlayerController : MonoBehaviour
 
         float targetX = moveInput.x * moveSpeed;
 
+
         // ● velocity → linearVelocity 변경
         Vector2 v = rb.linearVelocity;
+        float currentY = v.y;
+
         v.x = targetX;
+        v.y = currentY;
+
         rb.linearVelocity = v;
     }
 
@@ -156,6 +202,7 @@ public class PlayerController : MonoBehaviour
         {
             onLadder = true;
             rb.gravityScale = 0f;
+            rb.linearVelocityX = 0f;
         }
 
         if (onLadder)
@@ -179,6 +226,16 @@ public class PlayerController : MonoBehaviour
         Vector3 p = interactPoint ? interactPoint.position : transform.position;
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(p, interactRadius);
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if ((collision.gameObject.layer == LayerMask.NameToLayer("Ladder")) && onLadder)
+        {
+            Vector2 newPos = this.transform.position;
+            newPos.x = collision.transform.position.x;
+            this.transform.position = newPos;
+        }
     }
 }
 
