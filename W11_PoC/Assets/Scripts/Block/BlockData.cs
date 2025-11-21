@@ -11,8 +11,6 @@ public class BlockData : ScriptableObject
     [Header("모양(0,0 기준 상대 좌표)")]
     public List<Vector2Int> shape = new List<Vector2Int>();
 
-    [Header("미리보기")]
-    [SerializeField] private Sprite previewSprite;
 
     public Vector2Int GetBounds()
     {
