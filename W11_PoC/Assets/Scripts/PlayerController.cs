@@ -27,8 +27,8 @@ public class PlayerController : MonoBehaviour
     public LayerMask ladderMask;
     public float climbSpeed = 4f;
 
-    bool onLadder = false;
-    bool nearLadder = false;
+    public bool onLadder = false;
+    public bool nearLadder = false;
 
     [Header("Interact")]
     public LayerMask interactMask;
@@ -60,9 +60,14 @@ public class PlayerController : MonoBehaviour
 
         float targetX = moveInput.x * moveSpeed;
 
+
         // ● velocity → linearVelocity 변경
         Vector2 v = rb.linearVelocity;
+        float currentY = v.y;
+
         v.x = targetX;
+        v.y = currentY;
+
         rb.linearVelocity = v;
     }
 
@@ -156,6 +161,7 @@ public class PlayerController : MonoBehaviour
         {
             onLadder = true;
             rb.gravityScale = 0f;
+            rb.linearVelocityX = 0f;
         }
 
         if (onLadder)
@@ -179,6 +185,16 @@ public class PlayerController : MonoBehaviour
         Vector3 p = interactPoint ? interactPoint.position : transform.position;
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(p, interactRadius);
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if ((collision.gameObject.layer == LayerMask.NameToLayer("Ladder")) && onLadder)
+        {
+            Vector2 newPos = this.transform.position;
+            newPos.x = collision.transform.position.x;
+            this.transform.position = newPos;
+        }
     }
 }
 
