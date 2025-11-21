@@ -60,7 +60,7 @@ public class GridManager : MonoBehaviour
     {
         foreach (var grid in registeredGrids)
         {
-            if (grid.ContainsScreenPoint(screenPos, uiCamera))
+            if (grid.ContainsScreenPoint(screenPos, uiCamera) && grid.gameObject.activeSelf)
             {
                 return grid;
             }

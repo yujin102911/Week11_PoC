@@ -79,7 +79,7 @@ public class Grid : MonoBehaviour
             for (int x = 0; x < width; x++)
             {
                 GridCell newCell = Instantiate(cellPrefab, gridContainer);
-                newCell.name = $"Cell_{x}_{y}";
+                newCell.name = $"{this.name}_Cell_{x}_{y}";
                 newCell.Init(x, y, this); // Grid 참조 전달
                 gridArray[x, y] = newCell;
             }
