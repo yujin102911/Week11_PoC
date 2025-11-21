@@ -150,6 +150,7 @@ public class BlockItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
 
         if (targetGrid != null)
         {
+            
             Vector2Int gridPos = targetGrid.GetGridIndexFromWorldPos(eventData.position);
             placed = targetGrid.TryPlaceBlockWithShape(gridPos, currentShape, blockData);
         }
