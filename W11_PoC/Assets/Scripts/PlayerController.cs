@@ -50,6 +50,9 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (UIManager.Instance.Is_panel)
+            return;
+
         HandleMovement();
         HandleClimbing();
     }
@@ -124,6 +127,9 @@ public class PlayerController : MonoBehaviour
     // ---------------- 이동 ---------------- //
     public void OnMove(InputAction.CallbackContext ctx)
     {
+        if (UIManager.Instance.Is_panel)
+            return;
+
         moveInput = ctx.ReadValue<Vector2>();
     }
 
@@ -133,6 +139,9 @@ public class PlayerController : MonoBehaviour
     public void OnJump(InputAction.CallbackContext ctx)
     {
         if (!ctx.started) return;
+
+        if (UIManager.Instance.Is_panel)
+            return;
 
         Vector2 v = rb.linearVelocity;
 
@@ -159,6 +168,9 @@ public class PlayerController : MonoBehaviour
     {
         if (!ctx.started) return;
 
+        if (UIManager.Instance.Is_panel)
+            return;
+
         Vector2 pos = interactPoint ? (Vector2)interactPoint.position : (Vector2)transform.position;
 
         var hits = Physics2D.OverlapCircleAll(pos, interactRadius, interactMask);
@@ -179,6 +191,8 @@ public class PlayerController : MonoBehaviour
 
         if (best != null)
             best.Interact();
+
+        moveInput = Vector2.zero;
     }
 
     // ---------------- 사다리 ---------------- //
