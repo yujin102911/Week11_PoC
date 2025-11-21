@@ -276,6 +276,7 @@ public class Grid : MonoBehaviour
 public enum GridType
 {
     Inventory,     //인벤토리
-    Storage,        //창고
+    Storage,       //창고
     Refrigerator,  //냉장고
+    Serving,       //판매제출용
 }
