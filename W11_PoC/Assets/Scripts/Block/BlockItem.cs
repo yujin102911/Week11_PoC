@@ -185,11 +185,27 @@ public class BlockItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
     {
         if (cellVisualPrefab == null) return;
 
+        // 1. 기존 자식 제거
         foreach (Transform child in transform)
         {
             Destroy(child.gameObject);
         }
 
+        // 2. 전체 사이즈 계산
+        Vector2Int bounds = GetCurrentBounds(); // (가로 개수, 세로 개수)
+
+        float totalWidth = bounds.x * visualCellSize + (bounds.x - 1) * visualSpacing;
+        float totalHeight = bounds.y * visualCellSize + (bounds.y - 1) * visualSpacing;
+
+        // 3. BlockItem(부모)의 크기를 내용물에 딱 맞게 조정
+        rectTransform.sizeDelta = new Vector2(totalWidth, totalHeight);
+
+        // 4. 시작 좌표 계산 (정중앙 (0,0) 기준, 왼쪽 아래 셀의 중심 좌표)
+        // 식: -(전체길이 / 2) + (셀크기 / 2)
+        float startX = -totalWidth / 2f + visualCellSize / 2f;
+        float startY = -totalHeight / 2f + visualCellSize / 2f;
+
+        // 5. 셀 배치
         foreach (Vector2Int offset in currentShape)
         {
             GameObject cellVisual = Instantiate(cellVisualPrefab, transform);
@@ -197,8 +213,13 @@ public class BlockItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
             RectTransform cellRect = cellVisual.GetComponent<RectTransform>();
             if (cellRect != null)
             {
-                float posX = offset.x * (visualCellSize + visualSpacing);
-                float posY = offset.y * (visualCellSize + visualSpacing);
+                // 앵커를 중앙으로 고정 (중요!)
+                cellRect.anchorMin = new Vector2(0.5f, 0.5f);
+                cellRect.anchorMax = new Vector2(0.5f, 0.5f);
+                cellRect.pivot = new Vector2(0.5f, 0.5f); // 프리팹 설정이 달라도 강제로 중앙으로 맞춤
+
+                float posX = startX + offset.x * (visualCellSize + visualSpacing);
+                float posY = startY + offset.y * (visualCellSize + visualSpacing);
 
                 cellRect.anchoredPosition = new Vector2(posX, posY);
                 cellRect.sizeDelta = new Vector2(visualCellSize, visualCellSize);
@@ -211,7 +232,8 @@ public class BlockItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
             }
         }
 
-        AdjustRectSize();
+        // AdjustRectSize()는 위에서 이미 sizeDelta를 맞췄으므로 
+        // 따로 호출할 필요가 없거나, 호출해도 같은 값을 계산하게 됩니다.
     }
 
     private void AdjustRectSize()
