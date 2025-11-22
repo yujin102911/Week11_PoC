@@ -220,8 +220,11 @@ public class BlockSpawner : MonoBehaviour
     /// </summary>
     public bool IsPointerOverSpawnArea(Vector2 screenPos)
     {
+        // 비활성화 상태면 false 반환
+        if (!gameObject.activeInHierarchy) return false;
+
         RectTransform targetArea = returnArea != null ? returnArea : spawnArea;
-        if (targetArea == null) return false;
+        if (targetArea == null || !targetArea.gameObject.activeInHierarchy) return false;
 
         return RectTransformUtility.RectangleContainsScreenPoint(targetArea, screenPos, uiCamera);
     }

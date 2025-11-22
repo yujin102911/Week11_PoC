@@ -157,10 +157,19 @@ public class GridCell : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     {
         if (!isDraggingBlock || draggingBlockInfo == null) return;
 
-        // SpawnPanel 위에 드롭했는지 체크
-        if (BlockSpawner.Instance != null && BlockSpawner.Instance.IsPointerOverSpawnArea(eventData.position))
+        // SpawnPanel 위에 드롭했는지 체크 (활성화 상태일 때만)
+        if (BlockSpawner.Instance != null
+            && BlockSpawner.Instance.gameObject.activeInHierarchy  // 추가된 체크
+            && BlockSpawner.Instance.IsPointerOverSpawnArea(eventData.position))
         {
-            BlockSpawner.Instance.CreateBlockItemFromPlaced(draggingBlockInfo, eventData.position);
+            BlockItem createdBlock = BlockSpawner.Instance.CreateBlockItemFromPlaced(draggingBlockInfo, eventData.position);
+
+            // 블록 생성 실패 시 원래 위치로 복귀
+            if (createdBlock == null)
+            {
+                originalGrid.TryPlaceWithInfo(draggingBlockInfo.Origin, draggingBlockInfo);
+            }
+
             GridManager.Instance.ClearAllPreviews();
             ResetDragState();
             return;
