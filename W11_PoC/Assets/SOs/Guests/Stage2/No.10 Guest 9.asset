@@ -18,5 +18,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 80b5d18de03d8864385a13b1760f864c, type: 2}
   - {fileID: 11400000, guid: f18f329e3b373264b86154b63f13da10, type: 2}
   - {fileID: 11400000, guid: 1441307a02eb4344c9f117de89ae42a3, type: 2}
-  patienceTime: 20
-  paymentAmount: 100
+  patienceTime: 30
+  paymentAmount: 800
