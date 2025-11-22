@@ -19,6 +19,9 @@ public class GuestManager : MonoBehaviour
 
     private Grid _servingGrid; // 판매대
 
+    private int _seccuessGuestNum;
+    private int _maxGuestNum;
+
     private void Awake()
     {
         Instance = this;
@@ -28,7 +31,7 @@ public class GuestManager : MonoBehaviour
     {
         // 시작할 때 Serving 그리드를 못 찾을 수도 있으니 일단 시도
         FindServingGrid();
-        LoadStage(_currentStage);
+        //LoadStage(_currentStage);
     }
 
     // 그리드를 찾는 함수 분리 (못 찾으면 다시 찾으려고)
@@ -63,6 +66,10 @@ public class GuestManager : MonoBehaviour
     {
         _currentStage = stageIndex;
         _guestQueue.Clear();
+
+        //성공 판단 여부를 위한 변수 세팅
+        _seccuessGuestNum = 0;
+        _maxGuestNum = stageGuestDBs[stageIndex].guests.Count;
 
         if (stageGuestDBs != null && stageIndex < stageGuestDBs.Length)
         {
@@ -134,10 +141,21 @@ public class GuestManager : MonoBehaviour
         {
             Debug.Log("성공: 주문하신 물건이 맞습니다! (판매 완료)");
 
-            // 정산 처리 (돈 오르는 로직 여기에 추가)
+            // 정산 처리 (돈 오르는 로직 여기에 추가)_임의로 100점 넣음
+            GameManager.Instance.GainPoint(100);
 
             _servingGrid.ClearAllCells(); // 그리드 비우기
             OnGuestLeave(_currentGuest, true);
+
+            //제출 패널 닫기
+            UIManager.Instance.OffSubmit();
+
+            //성공 판단 체크
+            _seccuessGuestNum++;
+            if(_seccuessGuestNum >= _maxGuestNum)
+            {
+                GameManager.Instance.RoundClear();
+            }
         }
         else
         {

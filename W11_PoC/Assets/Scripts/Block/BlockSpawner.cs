@@ -5,11 +5,15 @@ public class BlockSpawner : MonoBehaviour
 {
     public static BlockSpawner Instance;
 
+    public bool Is_spawn = false;
+
     [Header("프리팹")]
     [SerializeField] private BlockItem blockItemPrefab;
 
     [Header("블록 데이터베이스")]
-    [SerializeField] private BlockDatabase blockDatabase;
+    [SerializeField] 
+    private BlockDatabase[] _blockDatabases;
+    private BlockDatabase blockDatabase;
 
     [Header("스폰 영역 설정")]
     [SerializeField] private RectTransform spawnArea;        // 블록들이 생성될 영역
@@ -35,9 +39,29 @@ public class BlockSpawner : MonoBehaviour
 
     private void Start()
     {
+        //InitializeQueue();
+        //GenerateSpawnSlots();
+        //FillEmptySlots();
+    }
+
+    private void OnEnable()
+    {
+        //최초 1회 스폰
+        if (!Is_spawn)
+        {
+            SetBlocks(GameManager.Instance.CurrentStage);
+        }
+    }
+
+    public void SetBlocks(int stageIndex)
+    {
+        blockDatabase = _blockDatabases[stageIndex];
+
         InitializeQueue();
         GenerateSpawnSlots();
         FillEmptySlots();
+
+        Is_spawn = true;
     }
 
     /// <summary>
@@ -182,6 +206,8 @@ public class BlockSpawner : MonoBehaviour
         // 필요시 다시 섞어서 시작하거나 게임 종료 등
         // InitializeQueue();
         // FillEmptySlots();
+
+        UIManager.Instance.ActivePlayBtn();
     }
 
     /// <summary>
@@ -216,6 +242,13 @@ public class BlockSpawner : MonoBehaviour
         newBlock.name = $"Block_Returned_{blockInfo.SourceData?.blockName ?? "Unknown"}";
 
         currentBlocks.Add(newBlock);
+
+        if (RemainingBlockCount > 0) 
+        {
+            UIManager.Instance.UnActivePlayBtn();
+        }
+
+        //Debug.Log("돌아왔어요");
         return newBlock;
     }
 

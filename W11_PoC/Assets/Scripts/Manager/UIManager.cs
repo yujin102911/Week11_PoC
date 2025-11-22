@@ -8,11 +8,33 @@ public class UIManager : MonoBehaviour
 
     public bool Is_panel = false;
 
+    [Header("Phase_Message")]
+    [SerializeField]
+    private TextMeshProUGUI _phaseTxt;
+
+    [Header("Point")]
+    [SerializeField]
+    private TextMeshProUGUI _pointTxt;
+
     [Header("Timer")]
+    [SerializeField]
+    private GameObject _timer;
     [SerializeField]
     private Image _timeGauge;
     [SerializeField]
     private TextMeshProUGUI _timerTxt;
+
+    [Header("Submit")]
+    [SerializeField]
+    private GameObject _submitPanel;
+    [SerializeField]
+    private GameObject _submitGrid;
+
+    [Header("Spwan")]
+    [SerializeField]
+    private GameObject _spwanPanel;
+    [SerializeField]
+    private Button _playButton;
 
     [Header("Storage")]
     [SerializeField]
@@ -21,6 +43,14 @@ public class UIManager : MonoBehaviour
     private GameObject[] _storageGrid;
     [SerializeField]
     private TextMeshProUGUI _storageTxt;
+
+    [Header("Finish")]
+    [SerializeField]
+    private GameObject _finishPanel;
+    [SerializeField]
+    private TextMeshProUGUI _resultTxt;
+    [SerializeField]
+    private Button _nextButton;
 
     private void Awake()
     {
@@ -42,6 +72,80 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void ClickPlayBtn()
+    {
+        _playButton.interactable = false;
+        OffSpwan();
+
+        GameManager.Instance.ChangePhase(Phase.sell);
+        GameManager.Instance.StartPhase();
+    }
+
+    //blockSpawner에서 호출
+    public void ActivePlayBtn()
+    {
+        _playButton.interactable = true;
+
+        _playButton.onClick.RemoveAllListeners();
+        _playButton.onClick.AddListener(ClickPlayBtn);
+    }
+
+    public void UnActivePlayBtn()
+    {
+        _playButton.interactable = false;
+
+        _playButton.onClick.RemoveAllListeners();
+    }
+
+    public void OpenFinish()
+    {
+        _finishPanel.SetActive(true);
+        _resultTxt.text = $"점수: +{GameManager.Instance.StagePointed}";
+
+        _nextButton.onClick.RemoveAllListeners();
+        _nextButton.onClick.AddListener(ClickNextBtn);
+
+        Time.timeScale = 0f;
+    }
+
+    public void ClickNextBtn()
+    {
+        Time.timeScale = 1.0f;
+
+
+        GameManager.Instance.ChangePhase(Phase.prepare);
+        GameManager.Instance.StartPhase();
+
+        _finishPanel.SetActive(false);
+    }
+
+    public void OpenSubmit()
+    {
+        _submitPanel.SetActive(true);
+        _submitGrid.SetActive(true);
+        Is_panel = true;
+    }
+
+    public void OffSubmit()
+    {
+        _submitPanel.SetActive(false);
+        _submitGrid.SetActive(false);
+        Is_panel = false;
+    }
+
+    public void OpenSpwan()
+    {
+        _spwanPanel.SetActive(true);
+        Is_panel = true;
+    }
+
+    public void OffSpwan()
+    {
+        _spwanPanel.SetActive(false);
+        Is_panel = false;
+    }
+
+    //저장 박스 패널 열기
     public void OpenStorage(string id)
     {
         _storagePanel.SetActive(true);
@@ -88,4 +192,24 @@ public class UIManager : MonoBehaviour
 
         _timerTxt.text = Mathf.FloorToInt(c).ToString();
     }
+
+    public void UpdatePhaseMessage(Phase phase)
+    {
+        switch (phase)
+        {
+            case Phase.prepare:
+                _phaseTxt.text = "준비중...";
+                _timer.SetActive(false);
+                break;
+            case Phase.sell:
+                _phaseTxt.text = "영업중...";
+                _timer.SetActive(true);
+                break;
+        }
+    }
+    public void UpdatePoint(int point)
+    {
+        _pointTxt.text = $"점수: {point}";
+    }
+
 }
