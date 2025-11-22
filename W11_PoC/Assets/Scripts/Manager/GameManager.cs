@@ -11,9 +11,23 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
+    [Header("Object")]
+    [SerializeField]
+    private GameObject _prepareBox;
+
+    [SerializeField]
+    private BlockSpawner _blockSpawner;
+
     [Header("Play_setting")]
     public float MaxTime = 60.0f;
     public float CurrentTime;
+    public int CurrentStage;
+    public int TotalPoint;
+    public int StagePointed;
+
+
+
+    private Phase _phase;
 
     private void Awake()
     {
@@ -23,23 +37,72 @@ public class GameManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        CurrentTime = MaxTime;
+        ChangePhase(Phase.prepare);
+        StartPhase();
     }
 
     // Update is called once per frame
     void Update()
     {
-        CurrentTime -= Time.deltaTime;
-        UIManager.Instance.UpdateTimeGauge(CurrentTime, MaxTime);
-
-        if (CurrentTime < 0) 
+        if (_phase == Phase.sell)
         {
-            Debug.Log("장사 끝!!!");
+            CurrentTime -= Time.deltaTime;
+            UIManager.Instance.UpdateTimeGauge(CurrentTime, MaxTime);
+
+            if (CurrentTime < 0)
+            {
+                Debug.Log("장사 끝!!!");
+                RoundOver();
+            }
         }
     }
 
     private void FixedUpdate()
     {
         //CurrentTime -= Time.deltaTime;
+    }
+
+    public void ChangePhase(Phase next)
+    {
+        _phase = next;
+    }
+
+    public void StartPhase()
+    {
+        StagePointed = 0;
+
+        switch (_phase)
+        {
+            case Phase.prepare:
+                _prepareBox.SetActive(true);
+                _blockSpawner.Is_spawn = false;
+                //BlockSpawner.Instance.Is_spawn = false;
+                break;
+            case Phase.sell:
+                _prepareBox.SetActive(false);
+                CurrentTime = MaxTime;
+                GuestManager.Instance.LoadStage(CurrentStage);
+                CurrentStage++;
+                break;
+        }
+
+        UIManager.Instance.UpdatePhaseMessage(_phase);
+    }
+
+    public void RoundClear()
+    {
+        UIManager.Instance.OpenFinish();
+    }
+
+    public void RoundOver()
+    {
+        UIManager.Instance.OpenFinish();
+    }
+
+    public void GainPoint(int point)
+    {
+        StagePointed += point;
+        TotalPoint += point;
+        UIManager.Instance.UpdatePoint(TotalPoint);
     }
 }
