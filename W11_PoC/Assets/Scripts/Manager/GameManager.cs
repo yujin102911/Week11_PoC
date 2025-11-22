@@ -75,15 +75,17 @@ public class GameManager : MonoBehaviour
         switch (_phase)
         {
             case Phase.prepare:
+                if (CurrentStage >= MaxStage)
+                {
+                    QuitGame();
+                }
+
                 _prepareBox.SetActive(true);
                 _blockSpawner.Is_spawn = false;
                 //BlockSpawner.Instance.Is_spawn = false;
                 break;
             case Phase.sell:
-                if (CurrentStage >= MaxStage)
-                {
-                    QuitGame();
-                }
+                
 
                 _prepareBox.SetActive(false);
                 CurrentTime = MaxTime;
