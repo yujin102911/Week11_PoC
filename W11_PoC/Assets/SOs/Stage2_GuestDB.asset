@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cfcca6bba8d7ea4b9140fe981e6a737, type: 3}
+  m_Name: Stage2_GuestDB
+  m_EditorClassIdentifier: Assembly-CSharp::GuestDatabase
+  guests:
+  - {fileID: 11400000, guid: dd5056a26b294214f99d044a8ef27af1, type: 2}
+  - {fileID: 11400000, guid: 069f63ed33fe1c34fa9da973400b01f2, type: 2}
+  - {fileID: 11400000, guid: 2cb570a2fc6290b4c9b665ce7de71564, type: 2}
+  - {fileID: 11400000, guid: 306350b5cd0808641bd9e6abcfcf4bee, type: 2}
+  - {fileID: 11400000, guid: 2ea5fb583cfec2542849699f4e0515c8, type: 2}
+  - {fileID: 11400000, guid: 2e8524ee0ec2cae4dbe29243f6db8953, type: 2}
+  - {fileID: 11400000, guid: 4c58673ba4f6a7c4fba9f683db08fbfc, type: 2}
+  - {fileID: 11400000, guid: 8e3e17e7b297b7446841cd53f4813909, type: 2}
+  - {fileID: 11400000, guid: 07b2af99be6e54245aa675fc2843c79a, type: 2}
+  - {fileID: 11400000, guid: 110b77b929b1f864fa2ea930695a90ac, type: 2}
