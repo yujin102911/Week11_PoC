@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 309e9a034fd453b48a3a1345b71ddd50, type: 3}
-  m_Name: T
+  m_Name: 10. F
   m_EditorClassIdentifier: 
-  blockName: T
-  blockColor: {r: 0.10588237, g: 0.8509804, b: 0.53205734, a: 1}
+  blockName: "\uC0B4\uAD6C"
+  blockColor: {r: 0.8301887, g: 0.6774653, b: 0.512994, a: 1}
   shape:
-  - {x: 1, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 1}
+  - {x: 0, y: 2}
   - {x: 1, y: 1}
   - {x: 1, y: 2}
-  - {x: 0, y: 2}
-  - {x: 2, y: 2}

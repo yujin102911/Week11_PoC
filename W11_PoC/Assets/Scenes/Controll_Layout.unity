@@ -2636,8 +2636,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 6
-  jumpForce: 14
+  jumpHeight: 5
+  timeToJumpApex: 0.6
+  upwardMovementMultiplier: 1
+  downwardMovementMultiplier: 2
+  variableJumpHeight: 1
+  jumpCutOff: 2
+  speedLimit: 25
   coyoteTime: 0.1
+  jumpBuffer: 0.1
+  ladderJumpForce: 14
   groundCheck: {fileID: 1767686171}
   groundRadius: 0.15
   groundMask:

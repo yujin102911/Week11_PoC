@@ -10,12 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 309e9a034fd453b48a3a1345b71ddd50, type: 3}
-  m_Name: Z
+  m_Name: "4. \u3134"
   m_EditorClassIdentifier: 
-  blockName: Z
-  blockColor: {r: 0.86274517, g: 0, b: 0, a: 1}
+  blockName: "\uBCF4\uB791\uC774"
+  blockColor: {r: 0.75504905, g: 0.22921856, b: 0.9528302, a: 1}
   shape:
-  - {x: 0, y: 1}
-  - {x: 1, y: 1}
+  - {x: 0, y: 0}
   - {x: 1, y: 0}
-  - {x: 2, y: 0}
+  - {x: 0, y: 1}
