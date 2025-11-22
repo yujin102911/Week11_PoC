@@ -1887,7 +1887,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _prepareBox: {fileID: 655973181}
   _blockSpawner: {fileID: 1651974588}
-  MaxTime: 60
+  MaxTime: 150
   CurrentTime: 0
   CurrentStage: 0
   TotalPoint: 0
@@ -3285,6 +3285,10 @@ PrefabInstance:
     - target: {fileID: 764911320424055263, guid: 87d20277e02011b4e858d3bbaff766ca, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4969460940109869352, guid: 87d20277e02011b4e858d3bbaff766ca, type: 3}
+      propertyPath: height
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7405621302253304250, guid: 87d20277e02011b4e858d3bbaff766ca, type: 3}
       propertyPath: m_Name
@@ -6236,6 +6240,14 @@ PrefabInstance:
     - target: {fileID: 6843912931534154537, guid: b7ceaf563e65cbb4699229d8d887ff59, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9000230717779417026, guid: b7ceaf563e65cbb4699229d8d887ff59, type: 3}
+      propertyPath: columnsCount
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 9000230717779417026, guid: b7ceaf563e65cbb4699229d8d887ff59, type: 3}
+      propertyPath: horizontalSpacing
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 9000230717779417026, guid: b7ceaf563e65cbb4699229d8d887ff59, type: 3}
       propertyPath: _blockDatabases.Array.size

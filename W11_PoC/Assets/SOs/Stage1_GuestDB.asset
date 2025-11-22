@@ -14,3 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GuestDatabase
   guests:
   - {fileID: 11400000, guid: 623c3d0a02ea39e45a7db81ea879b19d, type: 2}
+  - {fileID: 11400000, guid: de48e7fbb53c03e47b3048fc08679fac, type: 2}
+  - {fileID: 11400000, guid: 54d30cd95d107b346958a347c43fafd9, type: 2}
+  - {fileID: 11400000, guid: f9b91a8d7c5adab41b796a2922d303d6, type: 2}
+  - {fileID: 11400000, guid: 895d7bb07624d4f4eab778460d0a8ecb, type: 2}
+  - {fileID: 11400000, guid: f67d4e3e6eaf356429a9be7b4a2ccb63, type: 2}
