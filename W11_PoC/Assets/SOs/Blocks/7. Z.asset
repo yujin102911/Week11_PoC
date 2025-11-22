@@ -15,7 +15,7 @@ MonoBehaviour:
   blockName: "\uC8FC\uD669\uC774"
   blockColor: {r: 0.8679245, g: 0.37006417, b: 0.23335704, a: 1}
   shape:
+  - {x: 0, y: 0}
   - {x: 0, y: 1}
-  - {x: 1, y: 1}
+  - {x: -1, y: 1}
   - {x: 1, y: 0}
-  - {x: 2, y: 0}
