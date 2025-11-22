@@ -17,10 +17,12 @@ public class GridCell : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
     private Color invalidHighlightColor = new Color(1f, 0.5f, 0.5f, 0.5f);
 
     // 드래그 관련
-    private static bool isAnyDragging = false; // 전역 드래그 상태
+    private static bool isAnyDragging = false;
     private bool isDraggingBlock = false;
     private PlacedBlockInfo draggingBlockInfo;
     private Grid originalGrid;
+    private Vector2Int originalOrigin;           // 원래 Origin 저장
+    private List<Vector2Int> originalShape;      // 원래 Shape 저장
     private CanvasGroup canvasGroup;
 
     // 드래그 시각적 피드백용
@@ -197,25 +199,21 @@ public class GridCell : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        // 다른 드래그가 진행 중이면 무시
         if (isAnyDragging) return;
-
         if (!IsOccupied || PlacedBlock == null) return;
 
-        // 전역 드래그 상태 설정
         isAnyDragging = true;
         isDraggingBlock = true;
 
         draggingBlockInfo = PlacedBlock;
         originalGrid = OwnerGrid;
 
-        // 해당 블록의 모든 셀 제거
+        // 원래 상태 저장 (복귀용)
+        originalOrigin = draggingBlockInfo.Origin;
+        originalShape = new List<Vector2Int>(draggingBlockInfo.Shape);
+
         OwnerGrid.RemovePlacedBlock(draggingBlockInfo);
-
-        // 드래그 비주얼 생성
         CreateDragVisual();
-
-        // 이 셀의 레이캐스트 차단 (다른 셀이 이벤트 가로채지 않도록)
         canvasGroup.blocksRaycasts = false;
     }
 
@@ -245,7 +243,7 @@ public class GridCell : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
 
             if (createdBlock == null)
             {
-                originalGrid.TryPlaceWithInfo(draggingBlockInfo.Origin, draggingBlockInfo);
+                ReturnBlockToOriginalPosition();
             }
 
             GridManager.Instance.ClearAllPreviews();
@@ -260,12 +258,13 @@ public class GridCell : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
         if (targetGrid != null)
         {
             Vector2Int gridPos = targetGrid.GetGridIndexFromWorldPos(eventData.position);
-            // 중심 기준 shape 사용
+            // 중심 기준 shape로 배치 시도
             List<Vector2Int> centeredShape = GetCenteredShape(draggingBlockInfo.Shape);
 
-            // 임시로 shape 교체해서 배치
-            var originalShape = draggingBlockInfo.Shape;
+            // 원본 shape 백업
+            var originalShape = new List<Vector2Int>(draggingBlockInfo.Shape);
             draggingBlockInfo.Shape = centeredShape;
+
             placed = targetGrid.TryPlaceWithInfo(gridPos, draggingBlockInfo);
 
             // 배치 실패시 원래 shape 복원
@@ -278,11 +277,23 @@ public class GridCell : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
         // 배치 실패 시 원래 그리드, 원래 위치로 복귀
         if (!placed)
         {
-            originalGrid.TryPlaceWithInfo(draggingBlockInfo.Origin, draggingBlockInfo);
+            ReturnBlockToOriginalPosition();
         }
 
         GridManager.Instance.ClearAllPreviews();
         ResetDragState();
+    }
+
+    // 블록을 원래 위치로 복귀
+    private void ReturnBlockToOriginalPosition()
+    {
+        if (draggingBlockInfo == null || originalGrid == null) return;
+
+        // 저장해둔 원래 shape와 origin으로 복귀
+        draggingBlockInfo.Shape = new List<Vector2Int>(originalShape);
+        draggingBlockInfo.Origin = originalOrigin;
+
+        originalGrid.TryPlaceWithInfo(originalOrigin, draggingBlockInfo);
     }
 
     private void ResetDragState()
@@ -291,6 +302,8 @@ public class GridCell : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
         isAnyDragging = false;
         draggingBlockInfo = null;
         originalGrid = null;
+        originalOrigin = Vector2Int.zero;
+        originalShape = null;
         canvasGroup.blocksRaycasts = true;
 
         DestroyDragVisual();
@@ -372,7 +385,6 @@ public class GridCell : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
 
     #endregion
 }
-
 /// <summary>
 /// 그리드에 배치된 블록 정보
 /// </summary>
