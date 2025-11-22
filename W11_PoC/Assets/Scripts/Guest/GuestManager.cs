@@ -82,7 +82,29 @@ public class GuestManager : MonoBehaviour
         {
             Debug.LogError("오류: GuestDB가 연결되지 않았거나 스테이지 인덱스가 범위를 벗어남!");
         }
+
+        //손님 순서 섞기
+        ShuffleQueue();
     }
+
+    private void ShuffleQueue()
+    {
+        // Queue → List 변환
+        List<GuestData> list = new List<GuestData>(_guestQueue);
+
+        // 피셔–예이츠(Fisher–Yates) 셔플
+        for (int i = list.Count - 1; i > 0; i--)
+        {
+            int j = Random.Range(0, i + 1);
+            (list[i], list[j]) = (list[j], list[i]);
+        }
+
+        // 기존 Queue 비우고 다시 넣기
+        _guestQueue.Clear();
+        foreach (var g in list)
+            _guestQueue.Enqueue(g);
+    }
+
 
     private void SpawnNextGuest()
     {
