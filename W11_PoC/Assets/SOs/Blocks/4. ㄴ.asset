@@ -10,10 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 309e9a034fd453b48a3a1345b71ddd50, type: 3}
-  m_Name: 1 X 2
+  m_Name: "4. \u3134"
   m_EditorClassIdentifier: 
-  blockName: 1 X 2
-  blockColor: {r: 1, g: 0.7028302, b: 0.7028302, a: 1}
+  blockName: "\uBCF4\uB791"
+  blockColor: {r: 0.75504905, g: 0.22921856, b: 0.9528302, a: 1}
   shape:
   - {x: 0, y: 0}
   - {x: 1, y: 0}
+  - {x: 0, y: 1}
