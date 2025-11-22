@@ -1741,8 +1741,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: "<b><\uC810\uC218 \uACC4\uC0B0\uC2DD></b>\n\uC190\uB2D8\uC774 \uC694\uAD6C\uD55C
     \n<b>\uBE14\uB7ED\uC758 \uCE78</b> \uC218\uAC00 \uB9CE\uC744 \uC218\uB85D,\n<b>\uAE30\uB2E4\uB9B0
-    \uC2DC\uAC04\uC774 \uC801\uC744</b> \uC218\uB85D\n\uC810\uC218\uAC00 \uB192\uC544\uC9D1\uB2C8\uB2E4.\n\n<b><\uD301></b>\n\uC5B4\uB514\uC5D0
-    \uBB34\uC2A8 \uBB3C\uAC74\uC744 \uB193\uC558\uB294\uC9C0\n\uC798 \uAE30\uC5B5\uD558\uC138\uC694!!"
+    \uC2DC\uAC04\uC774 \uC801\uC744</b> \uC218\uB85D\n\uC810\uC218\uAC00 \uB192\uC544\uC9D1\uB2C8\uB2E4."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 82a734bbe967f7347b44bd4857b866e4, type: 2}
   m_sharedMaterial: {fileID: 546199596035815161, guid: 82a734bbe967f7347b44bd4857b866e4, type: 2}
@@ -2131,6 +2130,7 @@ MonoBehaviour:
   _blockSpawner: {fileID: 1651974588}
   MaxTime: 300
   CurrentTime: 0
+  MaxStage: 0
   CurrentStage: 0
   TotalPoint: 0
   StagePointed: 0

@@ -73,6 +73,7 @@ public class GridCell : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
             rotatedShape.Add(newPos);
         }
 
+        // 정규화 (0,0 기준으로) - 내부 저장용
         NormalizeShape(rotatedShape);
         draggingBlockInfo.Shape = rotatedShape;
 
@@ -105,12 +106,46 @@ public class GridCell : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
         if (targetGrid != null)
         {
             Vector2Int gridPos = targetGrid.GetGridIndexFromWorldPos(mousePos);
-            GridManager.Instance.ShowPreview(targetGrid, gridPos, draggingBlockInfo.Shape, draggingBlockInfo.Color);
+            // 중심 기준 shape 사용
+            List<Vector2Int> centeredShape = GetCenteredShape(draggingBlockInfo.Shape);
+            GridManager.Instance.ShowPreview(targetGrid, gridPos, centeredShape, draggingBlockInfo.Color);
         }
         else
         {
             GridManager.Instance.ClearAllPreviews();
         }
+    }
+
+    // Shape를 중심 기준으로 변환
+    private List<Vector2Int> GetCenteredShape(List<Vector2Int> shape)
+    {
+        if (shape == null || shape.Count == 0)
+            return shape;
+
+        // 바운드 계산
+        int minX = int.MaxValue, maxX = int.MinValue;
+        int minY = int.MaxValue, maxY = int.MinValue;
+
+        foreach (var pos in shape)
+        {
+            if (pos.x < minX) minX = pos.x;
+            if (pos.x > maxX) maxX = pos.x;
+            if (pos.y < minY) minY = pos.y;
+            if (pos.y > maxY) maxY = pos.y;
+        }
+
+        // 중심 오프셋 계산
+        int centerX = (minX + maxX) / 2;
+        int centerY = (minY + maxY) / 2;
+
+        // 중심 기준으로 변환
+        List<Vector2Int> centered = new List<Vector2Int>();
+        foreach (var pos in shape)
+        {
+            centered.Add(new Vector2Int(pos.x - centerX, pos.y - centerY));
+        }
+
+        return centered;
     }
 
     public void Init(int x, int y, Grid owner)
@@ -199,7 +234,6 @@ public class GridCell : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
             return;
         }
 
-        // 드래그 비주얼 제거
         DestroyDragVisual();
 
         // SpawnPanel 위에 드롭했는지 체크
@@ -219,14 +253,26 @@ public class GridCell : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
             return;
         }
 
-        // 현재 마우스 위치에서 그리드 찾기
+        // 그리드 찾기
         Grid targetGrid = GridManager.Instance.GetGridAtScreenPos(eventData.position);
         bool placed = false;
 
         if (targetGrid != null)
         {
             Vector2Int gridPos = targetGrid.GetGridIndexFromWorldPos(eventData.position);
+            // 중심 기준 shape 사용
+            List<Vector2Int> centeredShape = GetCenteredShape(draggingBlockInfo.Shape);
+
+            // 임시로 shape 교체해서 배치
+            var originalShape = draggingBlockInfo.Shape;
+            draggingBlockInfo.Shape = centeredShape;
             placed = targetGrid.TryPlaceWithInfo(gridPos, draggingBlockInfo);
+
+            // 배치 실패시 원래 shape 복원
+            if (!placed)
+            {
+                draggingBlockInfo.Shape = originalShape;
+            }
         }
 
         // 배치 실패 시 원래 그리드, 원래 위치로 복귀
@@ -258,7 +304,6 @@ public class GridCell : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
     {
         if (draggingBlockInfo == null) return;
 
-        // Canvas 찾기
         Canvas canvas = GetComponentInParent<Canvas>();
         if (canvas == null) return;
 
@@ -271,9 +316,24 @@ public class GridCell : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
         visualCanvasGroup.blocksRaycasts = false;
         visualCanvasGroup.alpha = 0.7f;
 
-        // 셀 크기 (대략적인 값, 필요시 Grid에서 가져오기)
         float cellSize = 40f;
         float spacing = 4f;
+
+        // 블록의 바운드 계산
+        int maxX = 0, maxY = 0;
+        foreach (var pos in draggingBlockInfo.Shape)
+        {
+            if (pos.x > maxX) maxX = pos.x;
+            if (pos.y > maxY) maxY = pos.y;
+        }
+
+        // 전체 크기 계산
+        float totalWidth = (maxX + 1) * cellSize + maxX * spacing;
+        float totalHeight = (maxY + 1) * cellSize + maxY * spacing;
+
+        // 중심 오프셋 (블록 중앙이 마우스 위치에 오도록)
+        float centerOffsetX = -totalWidth / 2f + cellSize / 2f;
+        float centerOffsetY = -totalHeight / 2f + cellSize / 2f;
 
         foreach (Vector2Int offset in draggingBlockInfo.Shape)
         {
@@ -284,8 +344,8 @@ public class GridCell : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
             cellRect.SetParent(dragVisualRect, false);
             cellRect.sizeDelta = new Vector2(cellSize, cellSize);
             cellRect.anchoredPosition = new Vector2(
-                offset.x * (cellSize + spacing),
-                offset.y * (cellSize + spacing)
+                centerOffsetX + offset.x * (cellSize + spacing),
+                centerOffsetY + offset.y * (cellSize + spacing)
             );
 
             cellImg.color = draggingBlockInfo.Color;
