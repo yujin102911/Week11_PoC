@@ -227,12 +227,18 @@ public class GuestManager : MonoBehaviour
 
     public void OnGuestLeave(Guest guest, bool isSuccess)
     {
+        // 정산 처리 (돈 오르는 로직 여기에 추가)_임의로 100점 넣음
+        if (isSuccess)
+        {
+            int pointed = _currentGuest.CaculatePoint();
+            GameManager.Instance.GainPoint(pointed);
+        }
+            
+
         if (guest != null) Destroy(guest.gameObject);
         _currentGuest = null;
 
-        // 정산 처리 (돈 오르는 로직 여기에 추가)_임의로 100점 넣음
-        if(isSuccess)
-            GameManager.Instance.GainPoint(100);
+        
 
         //성공 판단 체크
         _seccuessGuestNum++;
