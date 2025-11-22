@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
     [Header("Play_setting")]
     public float MaxTime = 60.0f;
     public float CurrentTime;
+    public int MaxStage;
     public int CurrentStage;
     public int TotalPoint;
     public int StagePointed;
@@ -79,15 +80,32 @@ public class GameManager : MonoBehaviour
                 //BlockSpawner.Instance.Is_spawn = false;
                 break;
             case Phase.sell:
+                if (CurrentStage >= MaxStage)
+                {
+                    QuitGame();
+                }
+
                 _prepareBox.SetActive(false);
                 CurrentTime = MaxTime;
                 GuestManager.Instance.LoadStage(CurrentStage);
                 CurrentStage++;
+                
                 break;
         }
 
         UIManager.Instance.UpdatePhaseMessage(_phase);
     }
+    public void QuitGame()
+    {
+#if UNITY_EDITOR
+        // 에디터에서 플레이 모드 종료
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+    // 빌드된 게임 종료
+    Application.Quit();
+#endif
+    }
+
 
     public void RoundClear()
     {

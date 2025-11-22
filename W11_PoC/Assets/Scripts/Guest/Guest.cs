@@ -22,6 +22,8 @@ public class Guest : MonoBehaviour
     private bool _isArrived = false;
     private Vector3 _targetPos;
 
+    private int _payment;
+
     // 초기화
     public void Setup(GuestData data, Vector3 targetPosition)
     {
@@ -29,6 +31,7 @@ public class Guest : MonoBehaviour
         _targetPos = targetPosition;
         _maxPatience = data.patienceTime;
         _currentPatience = _maxPatience;
+        _payment = data.paymentAmount;
 
         //타이머 끄기
         _timer.SetActive(false);
@@ -99,6 +102,16 @@ public class Guest : MonoBehaviour
             displayText += $"{pair.Key} x{pair.Value}\n";
         }
         orderText.text = displayText;
+    }
+
+    public int CaculatePoint()
+    {
+        int point = 0;
+        float f_point = _payment * (_currentPatience / _maxPatience);
+
+        point = (int)Mathf.Floor(f_point);
+
+        return point;
     }
 
     public GuestData GetData() => _data;

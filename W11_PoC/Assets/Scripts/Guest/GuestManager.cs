@@ -163,8 +163,7 @@ public class GuestManager : MonoBehaviour
         {
             Debug.Log("성공: 주문하신 물건이 맞습니다! (판매 완료)");
 
-            // 정산 처리 (돈 오르는 로직 여기에 추가)_임의로 100점 넣음
-            GameManager.Instance.GainPoint(100);
+            
 
             _servingGrid.ClearAllCells(); // 그리드 비우기
             OnGuestLeave(_currentGuest, true);
@@ -172,12 +171,7 @@ public class GuestManager : MonoBehaviour
             //제출 패널 닫기
             UIManager.Instance.OffSubmit();
 
-            //성공 판단 체크
-            _seccuessGuestNum++;
-            if(_seccuessGuestNum >= _maxGuestNum)
-            {
-                GameManager.Instance.RoundClear();
-            }
+            
         }
         else
         {
@@ -233,8 +227,25 @@ public class GuestManager : MonoBehaviour
 
     public void OnGuestLeave(Guest guest, bool isSuccess)
     {
+        // 정산 처리 (돈 오르는 로직 여기에 추가)_임의로 100점 넣음
+        if (isSuccess)
+        {
+            int pointed = _currentGuest.CaculatePoint();
+            GameManager.Instance.GainPoint(pointed);
+        }
+            
+
         if (guest != null) Destroy(guest.gameObject);
         _currentGuest = null;
+
+        
+
+        //성공 판단 체크
+        _seccuessGuestNum++;
+        if (_seccuessGuestNum >= _maxGuestNum)
+        {
+            GameManager.Instance.RoundClear();
+        }
     }
 
     private void UpdateGuestOrderFeedback()
