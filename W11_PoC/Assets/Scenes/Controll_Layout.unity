@@ -2635,9 +2635,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dda6c991e82660f428513cceed2abff0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 6
-  jumpForce: 14
+  moveSpeed: 10
+  jumpHeight: 5
+  timeToJumpApex: 0.6
+  upwardMovementMultiplier: 1
+  downwardMovementMultiplier: 2
+  variableJumpHeight: 1
+  jumpCutOff: 2
+  speedLimit: 25
   coyoteTime: 0.1
+  jumpBuffer: 0.1
+  ladderJumpForce: 14
   groundCheck: {fileID: 1767686171}
   groundRadius: 0.15
   groundMask:

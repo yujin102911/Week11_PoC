@@ -1,14 +1,23 @@
 ﻿using UnityEngine;
 using TMPro; // TextMeshPro 필수
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class Guest : MonoBehaviour
 {
     [Header("UI 연결")]
+    [Header("타이머")]
+    [SerializeField]
+    private GameObject _timer;
+    [SerializeField]
+    private Image _timeGauge;
     [SerializeField] private TextMeshProUGUI timerText; // 머리 위 타이머 텍스트
+
+    [Header("주문")]
     [SerializeField] private TextMeshProUGUI orderText; // 머리 위 주문 목록 (World Space UI)
 
     private GuestData _data;
+    private float _maxPatience;
     private float _currentPatience;
     private bool _isArrived = false;
     private Vector3 _targetPos;
@@ -18,7 +27,11 @@ public class Guest : MonoBehaviour
     {
         _data = data;
         _targetPos = targetPosition;
-        _currentPatience = data.patienceTime;
+        _maxPatience = data.patienceTime;
+        _currentPatience = _maxPatience;
+
+        //타이머 끄기
+        _timer.SetActive(false);
 
         UpdateOrderUI(data.orderList); // 초기 주문 표시
     }
@@ -44,6 +57,9 @@ public class Guest : MonoBehaviour
         {
             _isArrived = true;
             Debug.Log($"손님 {_data.guestID} 도착!");
+            
+            //타이머 켜기
+            _timer.SetActive(true);
         }
     }
 
@@ -51,6 +67,9 @@ public class Guest : MonoBehaviour
     private void HandlePatience()
     {
         _currentPatience -= Time.deltaTime;
+
+        if (_timeGauge != null)
+            _timeGauge.fillAmount = _currentPatience / _maxPatience;
 
         if (timerText != null)
             timerText.text = Mathf.Ceil(_currentPatience).ToString();
