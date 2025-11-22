@@ -3,12 +3,12 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
 
-public class GridCell : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class GridCell : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     public Vector2Int Coordinate { get; private set; }
     public bool IsOccupied { get; private set; }
     public PlacedBlockInfo PlacedBlock { get; private set; }
-    public Grid OwnerGrid { get; private set; } // 이 셀이 속한 그리드
+    public Grid OwnerGrid { get; private set; }
 
     [SerializeField] private Image cellImage;
 
@@ -17,15 +17,34 @@ public class GridCell : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     private Color invalidHighlightColor = new Color(1f, 0.5f, 0.5f, 0.5f);
 
     // 드래그 관련
+    private static bool isAnyDragging = false; // 전역 드래그 상태
     private bool isDraggingBlock = false;
     private PlacedBlockInfo draggingBlockInfo;
-    private Grid originalGrid; // 드래그 시작한 그리드
+    private Grid originalGrid;
+    private CanvasGroup canvasGroup;
+
+    // 드래그 시각적 피드백용
+    private GameObject dragVisual;
+    private RectTransform dragVisualRect;
+
+    private void Awake()
+    {
+        canvasGroup = GetComponent<CanvasGroup>();
+        if (canvasGroup == null)
+            canvasGroup = gameObject.AddComponent<CanvasGroup>();
+    }
 
     private void Update()
     {
         if (isDraggingBlock && draggingBlockInfo != null)
         {
             HandleRotationInput();
+
+            // 드래그 비주얼 위치 업데이트
+            if (dragVisual != null)
+            {
+                dragVisual.transform.position = Input.mousePosition;
+            }
         }
     }
 
@@ -46,7 +65,6 @@ public class GridCell : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         List<Vector2Int> currentShape = draggingBlockInfo.Shape;
         List<Vector2Int> rotatedShape = new List<Vector2Int>();
 
-        // 1. 회전 변환 (BlockItem과 동일한 로직)
         foreach (Vector2Int pos in currentShape)
         {
             Vector2Int newPos = clockwise
@@ -55,13 +73,10 @@ public class GridCell : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
             rotatedShape.Add(newPos);
         }
 
-        // 2. 정규화 (좌표를 (0,0) 기준으로 정렬)
         NormalizeShape(rotatedShape);
-
-        // 3. 데이터 업데이트
         draggingBlockInfo.Shape = rotatedShape;
 
-        // 4. 프리뷰 즉시 갱신 (현재 마우스 위치 기준)
+        UpdateDragVisual();
         UpdatePreviewAtPointer();
     }
 
@@ -82,7 +97,6 @@ public class GridCell : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         }
     }
 
-    // 프리뷰 갱신 로직을 분리 (OnDrag와 Rotate에서 공통 사용)
     private void UpdatePreviewAtPointer()
     {
         Vector2 mousePos = Input.mousePosition;
@@ -134,16 +148,40 @@ public class GridCell : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
     #region 배치된 블록 드래그 (그리드 간 이동)
 
+    // 클릭 즉시 드래그 준비 상태 확인
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        // 다른 드래그가 진행 중이면 무시
+        if (isAnyDragging) return;
+
+        // 이 셀이 비어있으면 무시
+        if (!IsOccupied || PlacedBlock == null) return;
+
+        // 드래그 가능 상태임을 표시 (시각적 피드백 등 추가 가능)
+    }
+
     public void OnBeginDrag(PointerEventData eventData)
     {
+        // 다른 드래그가 진행 중이면 무시
+        if (isAnyDragging) return;
+
         if (!IsOccupied || PlacedBlock == null) return;
+
+        // 전역 드래그 상태 설정
+        isAnyDragging = true;
+        isDraggingBlock = true;
 
         draggingBlockInfo = PlacedBlock;
         originalGrid = OwnerGrid;
-        isDraggingBlock = true;
 
         // 해당 블록의 모든 셀 제거
         OwnerGrid.RemovePlacedBlock(draggingBlockInfo);
+
+        // 드래그 비주얼 생성
+        CreateDragVisual();
+
+        // 이 셀의 레이캐스트 차단 (다른 셀이 이벤트 가로채지 않도록)
+        canvasGroup.blocksRaycasts = false;
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -155,12 +193,27 @@ public class GridCell : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (!isDraggingBlock || draggingBlockInfo == null) return;
+        if (!isDraggingBlock || draggingBlockInfo == null)
+        {
+            ResetDragState();
+            return;
+        }
+
+        // 드래그 비주얼 제거
+        DestroyDragVisual();
 
         // SpawnPanel 위에 드롭했는지 체크
-        if (BlockSpawner.Instance != null && BlockSpawner.Instance.IsPointerOverSpawnArea(eventData.position))
+        if (BlockSpawner.Instance != null
+            && BlockSpawner.Instance.gameObject.activeInHierarchy
+            && BlockSpawner.Instance.IsPointerOverSpawnArea(eventData.position))
         {
-            BlockSpawner.Instance.CreateBlockItemFromPlaced(draggingBlockInfo, eventData.position);
+            BlockItem createdBlock = BlockSpawner.Instance.CreateBlockItemFromPlaced(draggingBlockInfo, eventData.position);
+
+            if (createdBlock == null)
+            {
+                originalGrid.TryPlaceWithInfo(draggingBlockInfo.Origin, draggingBlockInfo);
+            }
+
             GridManager.Instance.ClearAllPreviews();
             ResetDragState();
             return;
@@ -189,8 +242,72 @@ public class GridCell : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     private void ResetDragState()
     {
         isDraggingBlock = false;
+        isAnyDragging = false;
         draggingBlockInfo = null;
         originalGrid = null;
+        canvasGroup.blocksRaycasts = true;
+
+        DestroyDragVisual();
+    }
+
+    #endregion
+
+    #region 드래그 비주얼
+
+    private void CreateDragVisual()
+    {
+        if (draggingBlockInfo == null) return;
+
+        // Canvas 찾기
+        Canvas canvas = GetComponentInParent<Canvas>();
+        if (canvas == null) return;
+
+        dragVisual = new GameObject("DragVisual");
+        dragVisualRect = dragVisual.AddComponent<RectTransform>();
+        dragVisual.transform.SetParent(canvas.transform, false);
+        dragVisual.transform.SetAsLastSibling();
+
+        CanvasGroup visualCanvasGroup = dragVisual.AddComponent<CanvasGroup>();
+        visualCanvasGroup.blocksRaycasts = false;
+        visualCanvasGroup.alpha = 0.7f;
+
+        // 셀 크기 (대략적인 값, 필요시 Grid에서 가져오기)
+        float cellSize = 40f;
+        float spacing = 4f;
+
+        foreach (Vector2Int offset in draggingBlockInfo.Shape)
+        {
+            GameObject cellObj = new GameObject($"Cell_{offset.x}_{offset.y}");
+            RectTransform cellRect = cellObj.AddComponent<RectTransform>();
+            Image cellImg = cellObj.AddComponent<Image>();
+
+            cellRect.SetParent(dragVisualRect, false);
+            cellRect.sizeDelta = new Vector2(cellSize, cellSize);
+            cellRect.anchoredPosition = new Vector2(
+                offset.x * (cellSize + spacing),
+                offset.y * (cellSize + spacing)
+            );
+
+            cellImg.color = draggingBlockInfo.Color;
+        }
+
+        dragVisual.transform.position = Input.mousePosition;
+    }
+
+    private void UpdateDragVisual()
+    {
+        DestroyDragVisual();
+        CreateDragVisual();
+    }
+
+    private void DestroyDragVisual()
+    {
+        if (dragVisual != null)
+        {
+            Destroy(dragVisual);
+            dragVisual = null;
+            dragVisualRect = null;
+        }
     }
 
     #endregion
