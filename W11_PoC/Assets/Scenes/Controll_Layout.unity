@@ -2270,7 +2270,7 @@ MonoBehaviour:
   _blockSpawner: {fileID: 1651974588}
   MaxTime: 300
   CurrentTime: 0
-  MaxStage: 0
+  MaxStage: 2
   CurrentStage: 0
   TotalPoint: 0
   StagePointed: 0
