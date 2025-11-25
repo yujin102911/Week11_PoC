@@ -271,6 +271,28 @@ public class Grid : MonoBehaviour
         if (!IsInBounds(x, y)) return null;
         return gridArray[x, y];
     }
+
+    public bool HasAnyItem
+    {
+        get
+        {
+            if (gridArray == null) return false;
+
+            for (int x = 0; x < width; x++)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    var cell = gridArray[x, y];
+                    if (cell != null && cell.IsOccupied)
+                        return true;
+                }
+            }
+
+            return false;
+        }
+    }
+
+
 }
 
 public enum GridType

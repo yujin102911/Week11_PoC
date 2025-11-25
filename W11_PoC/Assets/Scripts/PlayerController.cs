@@ -74,6 +74,29 @@ public class PlayerController : MonoBehaviour
     public float interactRadius = 1f;
     private ItemPickup CurrentHighlighted;
 
+    [Header("Inventory / Dash Lock")]
+    [Tooltip("인벤토리에 물건이 하나 이상 있으면 true로 설정 (그리드/인벤토리에서 세팅)")]
+    public bool hasItemInInventory = false;
+
+    [SerializeField]
+    [Tooltip("플레이어 인벤토리로 사용할 Grid (GridType.Inventory)")]
+    private Grid inventoryGrid;
+
+    [Header("Dash")]
+    [Tooltip("대시 속도 (수평)")]
+    public float dashSpeed = 12f;
+
+    [Tooltip("대시가 유지되는 시간(초)")]
+    public float dashDuration = 0.2f;
+
+    [Tooltip("다음 대시까지 대기 시간(쿨타임)")]
+    public float dashCooldown = 0.3f;
+
+    private bool isDashing = false;
+    private float dashTimer = 0f;
+    private float dashCooldownTimer = 0f;
+    private int dashDirection = 1;   // -1 왼쪽, 1 오른쪽
+
     #endregion
 
     #region Unity Callbacks
@@ -89,11 +112,27 @@ public class PlayerController : MonoBehaviour
         HandleJumpBuffer();
         HandleLadderDetection();
         FindInteract();
+
+        // 인벤토리 그리드 상태를 보고 대시 잠금 여부 갱신
+        if (inventoryGrid != null)
+        {
+            hasItemInInventory = inventoryGrid.HasAnyItem;
+        }
+        else
+        {
+            hasItemInInventory = false;
+        }
     }
 
     void FixedUpdate()
     {
         if (UIManager.Instance.Is_panel)
+            return;
+
+        HandleDashPhysics();
+
+        // 대시 중이면 일반 이동/점프 중력은 막는다
+        if (isDashing)
             return;
 
         HandleMovement();
@@ -103,6 +142,30 @@ public class PlayerController : MonoBehaviour
         {
             UpdateJumpGravity();
         }
+    }
+
+    void HandleDashPhysics()
+    {
+        // 쿨타임 타이머
+        if (dashCooldownTimer > 0f)
+            dashCooldownTimer -= Time.fixedDeltaTime;
+
+        if (!isDashing)
+            return;
+
+        dashTimer -= Time.fixedDeltaTime;
+
+        if (dashTimer <= 0f)
+        {
+            // 대시 종료
+            isDashing = false;
+            return;
+        }
+
+        // 대시 중일 때는 수평 속도를 강제로 고정
+        Vector2 v = rb.linearVelocity;
+        v.x = dashDirection * dashSpeed;
+        rb.linearVelocity = v;
     }
 
     // ---------------- Gizmos ---------------- //
@@ -133,7 +196,6 @@ public class PlayerController : MonoBehaviour
 
     #region Movement
 
-    // ---------------- Movement ---------------- //
     void HandleMovement()
     {
         if (onLadder)
@@ -150,7 +212,6 @@ public class PlayerController : MonoBehaviour
         rb.linearVelocity = v;
     }
 
-    // ---------------- 이동 ---------------- //
     public void OnMove(InputAction.CallbackContext ctx)
     {
         if (UIManager.Instance.Is_panel)
@@ -189,7 +250,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // ---------------- 점프 ---------------- //
     public void OnJump(InputAction.CallbackContext ctx)
     {
         if (UIManager.Instance.Is_panel)
@@ -212,7 +272,7 @@ public class PlayerController : MonoBehaviour
 
             desiredJump = true;
             jumpBufferTimer = jumpBuffer;
-            TryJump(); // 즉시 한 번 시도
+            TryJump();
         }
         else if (ctx.canceled)
         {
@@ -300,9 +360,51 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
+    #region Dash
+
+    public void OnDash(InputAction.CallbackContext ctx)
+    {
+        if (!ctx.started)
+            return;
+
+        if (UIManager.Instance.Is_panel)
+            return;
+
+        // 인벤토리에 물건이 있으면 대시 불가
+        if (hasItemInInventory)
+            return;
+
+        // 사다리 위에서는 대시 안 되게
+        if (onLadder)
+            return;
+
+        // 이미 대시 중이거나 쿨타임이면 불가
+        if (isDashing || dashCooldownTimer > 0f)
+            return;
+
+        // 방향 결정: 입력 x가 0이면, 바라보는 방향 기준
+        float xInput = moveInput.x;
+        if (Mathf.Abs(xInput) < 0.1f)
+        {
+            xInput = transform.localScale.x >= 0f ? 1f : -1f;
+        }
+
+        dashDirection = xInput > 0f ? 1 : -1;
+
+        isDashing = true;
+        dashTimer = dashDuration;
+        dashCooldownTimer = dashCooldown;
+
+        // 수직 속도는 잠깐 0으로 깔끔하게
+        Vector2 v = rb.linearVelocity;
+        v.y = 0f;
+        rb.linearVelocity = v;
+    }
+
+    #endregion
+
     #region Ladder
 
-    // ---------------- 사다리 ---------------- //
     void HandleLadderDetection()
     {
         nearLadder = Physics2D.OverlapCircle(transform.position, 0.3f, ladderMask);
@@ -323,7 +425,10 @@ public class PlayerController : MonoBehaviour
         {
             onLadder = true;
             rb.gravityScale = 0f;
-            rb.linearVelocityX = 0f;
+
+            Vector2 v = rb.linearVelocity;
+            v.x = 0f;
+            rb.linearVelocity = v;
         }
 
         if (onLadder)
@@ -372,7 +477,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // ---------------- 상호작용 ---------------- //
     public void OnInteract(InputAction.CallbackContext ctx)
     {
         if (!ctx.started) return;
