@@ -96,11 +96,13 @@ public class PlayerController : MonoBehaviour
     [Tooltip("대시할 때만 켜줄 트레일 렌더러")]
     public TrailRenderer dashTrail;
 
-
     private bool isDashing = false;
     private float dashTimer = 0f;
     private float dashCooldownTimer = 0f;
     private int dashDirection = 1;   // -1 왼쪽, 1 오른쪽
+
+    // 마지막으로 바라보는 방향 (1: 오른쪽, -1: 왼쪽)
+    private int facingDirection = 1;
 
     #endregion
 
@@ -178,7 +180,6 @@ public class PlayerController : MonoBehaviour
         rb.linearVelocity = v;
     }
 
-
     // ---------------- Gizmos ---------------- //
     private void OnDrawGizmosSelected()
     {
@@ -221,6 +222,12 @@ public class PlayerController : MonoBehaviour
         v.y = currentY;
 
         rb.linearVelocity = v;
+
+        // 입력 방향에 따라 바라보는 방향 갱신
+        if (moveInput.x > 0.1f)
+            facingDirection = 1;
+        else if (moveInput.x < -0.1f)
+            facingDirection = -1;
     }
 
     public void OnMove(InputAction.CallbackContext ctx)
@@ -393,14 +400,16 @@ public class PlayerController : MonoBehaviour
         if (isDashing || dashCooldownTimer > 0f)
             return;
 
-        // 방향 결정: 입력 x가 0이면, 바라보는 방향 기준
+        // 입력이 있으면 입력 방향, 없으면 마지막 바라보는 방향 사용
         float xInput = moveInput.x;
-        if (Mathf.Abs(xInput) < 0.1f)
+        if (Mathf.Abs(xInput) > 0.1f)
         {
-            xInput = transform.localScale.x >= 0f ? 1f : -1f;
+            dashDirection = xInput > 0f ? 1 : -1;
         }
-
-        dashDirection = xInput > 0f ? 1 : -1;
+        else
+        {
+            dashDirection = facingDirection;
+        }
 
         isDashing = true;
         dashTimer = dashDuration;

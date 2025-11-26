@@ -134,14 +134,14 @@ public class GameManager : MonoBehaviour
     //플레이어 온
     public void PlayerOn()
     {
-        _player.SetActive(true);
+        // _player.SetActive(true);
         UIManager.Instance.OpenInven();
     }
 
     //플레이어 온
     public void PlayerOff()
     {
-        _player.SetActive(false);
+        // _player.SetActive(false);
         UIManager.Instance.OffInven();
     }
 }
