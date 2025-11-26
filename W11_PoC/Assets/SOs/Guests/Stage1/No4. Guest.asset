@@ -17,5 +17,5 @@ MonoBehaviour:
   orderList:
   - {fileID: 11400000, guid: ad38a8fb57dc0224ab28614d7b4409d2, type: 2}
   - {fileID: 11400000, guid: 80b5d18de03d8864385a13b1760f864c, type: 2}
-  patienceTime: 30
+  patienceTime: 25
   paymentAmount: 400

@@ -3,7 +3,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
-public class BlockItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
+public class BlockItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler, IPointerClickHandler
 {
     [Header("데이터")]
     public BlockData blockData;
@@ -65,7 +65,7 @@ public class BlockItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
             rotatedShape.Add(newPos);
         }
 
-        NormalizeShape(rotatedShape);
+        //NormalizeShape(rotatedShape);
         currentShape = rotatedShape;
 
         currentRotation = clockwise
@@ -101,6 +101,16 @@ public class BlockItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
             GridManager.Instance.ShowPreview(currentHoverGrid, gridPos, currentShape, blockData.blockColor);
         }
     }
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Left)
+            Debug.Log("왼쪽 클릭");
+        else if (eventData.button == PointerEventData.InputButton.Right)
+            Debug.Log("오른쪽 클릭");
+        else if (eventData.button == PointerEventData.InputButton.Middle)
+            Debug.Log("휠 클릭");
+    }
+
 
     public void OnBeginDrag(PointerEventData eventData)
     {
@@ -203,8 +213,11 @@ public class BlockItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
 
         // 4. 시작 좌표 계산 (정중앙 (0,0) 기준, 왼쪽 아래 셀의 중심 좌표)
         // 식: -(전체길이 / 2) + (셀크기 / 2)
-        float startX = -totalWidth / 2f + visualCellSize / 2f;
-        float startY = -totalHeight / 2f + visualCellSize / 2f;
+        //float startX = -totalWidth / 2f + visualCellSize / 2f;
+        //float startY = -totalHeight / 2f + visualCellSize / 2f;
+
+        float startX = 0;
+        float startY = 0;
 
         // 5. 셀 배치
         foreach (Vector2Int offset in currentShape)
@@ -249,18 +262,27 @@ public class BlockItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
         );
     }
 
+    //음수 범위까지 계산하도록
     private Vector2Int GetCurrentBounds()
     {
         if (currentShape == null || currentShape.Count == 0)
             return Vector2Int.one;
 
         int maxX = 0, maxY = 0;
+        int minX = 0, minY = 0;
         foreach (var pos in currentShape)
         {
             if (pos.x > maxX) maxX = pos.x;
             if (pos.y > maxY) maxY = pos.y;
+
+            if(pos.x < minX) minX = pos.x;
+            if(pos.y < minY) minY = pos.y;
         }
-        return new Vector2Int(maxX + 1, maxY + 1);
+
+        int Xarea = maxX + 1 + Mathf.Abs(minX);
+        int Yarea = maxY + 1 + Mathf.Abs(minY);
+
+        return new Vector2Int(Xarea, Yarea);
     }
 
     public List<Vector2Int> GetCurrentShape() => currentShape;

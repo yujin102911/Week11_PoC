@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 [CreateAssetMenu(fileName = "NewBlock", menuName = "Game/Block Data")]
 public class BlockData : ScriptableObject
@@ -7,6 +8,9 @@ public class BlockData : ScriptableObject
     [Header("기본 정보")]
     public string blockName;
     public Color blockColor = Color.white;
+
+    [Header("이미지")]
+    public Sprite BlockSprite;
 
     [Header("모양(0,0 기준 상대 좌표)")]
     public List<Vector2Int> shape = new List<Vector2Int>();

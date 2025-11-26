@@ -1,11 +1,12 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
 using TMPro; // TextMeshPro 필수
-using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
+using VInspector;
 
 public class Guest : MonoBehaviour
 {
-    [Header("UI 연결")]
+    [Tab("타이머")]
     [Header("타이머")]
     [SerializeField]
     private GameObject _timer;
@@ -13,8 +14,13 @@ public class Guest : MonoBehaviour
     private Image _timeGauge;
     [SerializeField] private TextMeshProUGUI timerText; // 머리 위 타이머 텍스트
 
+    [Tab("주문")]
     [Header("주문")]
-    [SerializeField] private TextMeshProUGUI orderText; // 머리 위 주문 목록 (World Space UI)
+    [SerializeField]
+    private GameObject[] _orders;
+    [SerializeField]
+    private Image[] _orederImages;
+    [SerializeField] private TextMeshProUGUI[] orderTexts; // 머리 위 주문 목록 (World Space UI)
 
     private GuestData _data;
     private float _maxPatience;
@@ -86,7 +92,7 @@ public class Guest : MonoBehaviour
     // 주문 UI 갱신 (ㄴ자: 2개, .자: 1개 형식으로 텍스트 조합)
     public void UpdateOrderUI(List<BlockData> currentOrders)
     {
-        if (orderText == null) return;
+        if (orderTexts == null || _orederImages == null) return;
 
         // 블록 이름별 개수 카운트
         Dictionary<string, int> counts = new Dictionary<string, int>();
@@ -96,14 +102,34 @@ public class Guest : MonoBehaviour
             else counts[block.blockName] = 1;
         }
 
-        string displayText = "";
+        Dictionary<string, Sprite> sprites = new Dictionary<string, Sprite>();
+        foreach (var block in currentOrders)
+        {
+            if (sprites.ContainsKey(block.blockName)) continue;
+            else sprites[block.blockName] = block.BlockSprite;
+        }
+
+        OrederClear();
+
+        // 주문 목록 세팅
+        int index = 0;
         foreach (var pair in counts)
         {
-            displayText += $"{pair.Key} x{pair.Value}\n";
+            _orederImages[index].sprite = sprites[pair.Key];
+            orderTexts[index].text = $" x{pair.Value}";
+            _orders[index].SetActive(true);
+            index++;
         }
-        orderText.text = displayText;
+
+        //string displayText = "";
+        //foreach (var pair in counts)
+        //{
+        //    displayText += $"{pair.Key} x{pair.Value}\n";
+        //}
+        //orderText.text = displayText;
     }
 
+    //점수 계산
     public int CaculatePoint()
     {
         int point = 0;
@@ -112,6 +138,15 @@ public class Guest : MonoBehaviour
         point = (int)Mathf.Floor(f_point);
 
         return point;
+    }
+
+    // 주문목록 끄기
+    private void OrederClear()
+    {
+        for (int i = 0; i < _orders.Length; i++)
+        {
+            _orders[i].SetActive(false);
+        }
     }
 
     public GuestData GetData() => _data;

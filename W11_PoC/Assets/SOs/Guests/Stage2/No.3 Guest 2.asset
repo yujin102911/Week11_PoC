@@ -16,5 +16,5 @@ MonoBehaviour:
   guestPrefab: {fileID: 2055473972308317258, guid: 736a48b11dc08c842b55f858531a7979, type: 3}
   orderList:
   - {fileID: 11400000, guid: ad38a8fb57dc0224ab28614d7b4409d2, type: 2}
-  patienceTime: 30
+  patienceTime: 25
   paymentAmount: 300
