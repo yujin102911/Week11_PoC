@@ -52,6 +52,10 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private Button _nextButton;
 
+    [Header("Finish")]
+    [SerializeField]
+    private GameObject _invenPanel;
+
     private void Awake()
     {
         Instance = this;
@@ -136,13 +140,25 @@ public class UIManager : MonoBehaviour
     public void OpenSpwan()
     {
         _spwanPanel.SetActive(true);
-        Is_panel = true;
+        //이제 정리 페이즈에서는 플레이어 없음
+        //Is_panel = true;
     }
 
     public void OffSpwan()
     {
         _spwanPanel.SetActive(false);
-        Is_panel = false;
+        //이제 정리 페이즈에서는 플레이어 없음
+        //Is_panel = false;
+    }
+
+    public void OpenInven()
+    {
+        _invenPanel.SetActive(true);
+    }
+
+    public void OffInven()
+    {
+        _invenPanel.SetActive(false);
     }
 
     //저장 박스 패널 열기

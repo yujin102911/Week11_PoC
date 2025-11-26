@@ -175,7 +175,6 @@ public class BlockSpawner : MonoBehaviour
 
         BlockItem newBlock = Instantiate(blockItemPrefab, spawnArea);
         newBlock.transform.position = spawnSlots[slotIndex].position;
-        Debug.Log(spawnSlots[slotIndex].position);
         newBlock.SetupVisuals(blockData);
         newBlock.SlotIndex = slotIndex;
         newBlock.name = $"Block_{blockData.blockName}";

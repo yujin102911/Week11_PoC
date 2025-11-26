@@ -42,6 +42,34 @@ public class ItemPickup : MonoBehaviour, IInteractable
         // 지금은 그냥 씬에서 제거 = 줍힌 것처럼 보이게
         //Destroy(gameObject);
     }
+
+    private void OnMouseEnter()
+    {
+        if (UIManager.Instance.Is_panel) return;
+
+        SetHighlight();
+    }
+
+    private void OnMouseOver()
+    {
+        if (UIManager.Instance.Is_panel) return;
+
+        if (Input.GetMouseButtonDown(0)) 
+        {
+            Debug.Log(itemId + " 클릭됨!!");
+            Interact();
+            RestoreAlpha();
+        }
+        
+    }
+
+    private void OnMouseExit()
+    {
+        if (UIManager.Instance.Is_panel) return;
+
+        RestoreAlpha();
+    }
+
     public void SetHighlight()
     {
         var renderer = GetComponent<SpriteRenderer>();

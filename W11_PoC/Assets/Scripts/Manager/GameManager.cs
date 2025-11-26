@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
     [Header("Object")]
     [SerializeField]
     private GameObject _prepareBox;
+    [SerializeField]
+    private GameObject _player;
 
     [SerializeField]
     private BlockSpawner _blockSpawner;
@@ -38,6 +40,7 @@ public class GameManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        //게임 시작
         ChangePhase(Phase.prepare);
         StartPhase();
     }
@@ -80,14 +83,16 @@ public class GameManager : MonoBehaviour
                     QuitGame();
                 }
 
-                _prepareBox.SetActive(true);
+                PlayerOff();
+                //_prepareBox.SetActive(true);
+                UIManager.Instance.OpenSpwan();
                 _blockSpawner.Is_spawn = false;
                 //BlockSpawner.Instance.Is_spawn = false;
                 break;
             case Phase.sell:
-                
 
-                _prepareBox.SetActive(false);
+                PlayerOn();
+                //_prepareBox.SetActive(false);
                 CurrentTime = MaxTime;
                 GuestManager.Instance.LoadStage(CurrentStage);
                 CurrentStage++;
@@ -124,5 +129,19 @@ public class GameManager : MonoBehaviour
         StagePointed += point;
         TotalPoint += point;
         UIManager.Instance.UpdatePoint(TotalPoint);
+    }
+
+    //플레이어 온
+    public void PlayerOn()
+    {
+        _player.SetActive(true);
+        UIManager.Instance.OpenInven();
+    }
+
+    //플레이어 온
+    public void PlayerOff()
+    {
+        _player.SetActive(false);
+        UIManager.Instance.OffInven();
     }
 }
