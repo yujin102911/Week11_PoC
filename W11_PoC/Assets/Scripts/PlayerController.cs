@@ -92,6 +92,11 @@ public class PlayerController : MonoBehaviour
     [Tooltip("다음 대시까지 대기 시간(쿨타임)")]
     public float dashCooldown = 0.3f;
 
+    [Header("Dash FX")]
+    [Tooltip("대시할 때만 켜줄 트레일 렌더러")]
+    public TrailRenderer dashTrail;
+
+
     private bool isDashing = false;
     private float dashTimer = 0f;
     private float dashCooldownTimer = 0f;
@@ -159,6 +164,11 @@ public class PlayerController : MonoBehaviour
         {
             // 대시 종료
             isDashing = false;
+
+            // 대시 끝나면 트레일 끄기
+            if (dashTrail != null)
+                dashTrail.emitting = false;
+
             return;
         }
 
@@ -167,6 +177,7 @@ public class PlayerController : MonoBehaviour
         v.x = dashDirection * dashSpeed;
         rb.linearVelocity = v;
     }
+
 
     // ---------------- Gizmos ---------------- //
     private void OnDrawGizmosSelected()
@@ -399,6 +410,13 @@ public class PlayerController : MonoBehaviour
         Vector2 v = rb.linearVelocity;
         v.y = 0f;
         rb.linearVelocity = v;
+
+        // 대시 시작 시 트레일 켜기
+        if (dashTrail != null)
+        {
+            dashTrail.Clear();       // 이전 잔상 깔끔히
+            dashTrail.emitting = true;
+        }
     }
 
     #endregion
