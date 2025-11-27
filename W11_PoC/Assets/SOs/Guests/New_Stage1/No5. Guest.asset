@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d99303a1919bf148b3a8408faf917c1, type: 3}
+  m_Name: No5. Guest
+  m_EditorClassIdentifier: 
+  guestID: 05
+  guestPrefab: {fileID: 2055473972308317258, guid: 7fba765f06f421c46ad7e5ab1a9acd5d, type: 3}
+  patienceTime: 25
+  paymentAmount: 600
+  orderList:
+  - {fileID: 11400000, guid: e067cfeda275dd94fae5684f23650fa4, type: 2}
+  - {fileID: 11400000, guid: efde34292dd52894fb35548b293160ad, type: 2}
+  GuestPattern: {fileID: 11400000, guid: 84f9e8cbf9b5c4e49a1d51467a4429d4, type: 2}

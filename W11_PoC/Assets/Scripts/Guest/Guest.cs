@@ -6,6 +6,9 @@ using VInspector;
 
 public class Guest : MonoBehaviour
 {
+    [Header("새로운 버전인지")]
+    public bool Is_New;
+
     [Tab("타이머")]
     [Header("타이머")]
     [SerializeField]
@@ -15,7 +18,7 @@ public class Guest : MonoBehaviour
     [SerializeField] private TextMeshProUGUI timerText; // 머리 위 타이머 텍스트
 
     [Tab("주문")]
-    [Header("주문")]
+    [Header("주문UI")]
     [SerializeField]
     private GameObject[] _orders;
     [SerializeField]
@@ -53,7 +56,8 @@ public class Guest : MonoBehaviour
         }
         else
         {
-            HandlePatience();
+            if (Is_New)
+                HandlePatience();
         }
     }
 
@@ -66,9 +70,16 @@ public class Guest : MonoBehaviour
         {
             _isArrived = true;
             Debug.Log($"손님 {_data.guestID} 도착!");
-            
-            //타이머 켜기
-            _timer.SetActive(true);
+
+            if (Is_New)
+            {
+                sendPattern();
+            }
+            else
+            {
+                //타이머 켜기
+                _timer.SetActive(true);
+            }
         }
     }
 
@@ -83,15 +94,23 @@ public class Guest : MonoBehaviour
         if (timerText != null)
             timerText.text = Mathf.Ceil(_currentPatience).ToString();
 
-        if (_currentPatience <= 0)
+        if (_currentPatience <= 0 && !Is_New)
         {
             GuestManager.Instance.OnGuestLeave(this, false); // 시간 초과로 떠남
         }
     }
 
+    // 도착하고 그리드 패턴 넘겨주기
+    private void sendPattern()
+    {
+        UIManager.Instance.OpenSubmit(_data.GuestPattern, Is_New);
+    }
+
     // 주문 UI 갱신 (ㄴ자: 2개, .자: 1개 형식으로 텍스트 조합)
     public void UpdateOrderUI(List<BlockData> currentOrders)
     {
+        if (Is_New) return;
+
         if (orderTexts == null || _orederImages == null) return;
 
         // 블록 이름별 개수 카운트

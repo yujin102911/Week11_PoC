@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   guestID: 01
   guestPrefab: {fileID: 2055473972308317258, guid: 736a48b11dc08c842b55f858531a7979, type: 3}
-  orderList:
-  - {fileID: 11400000, guid: 90072d23d7e5677499b047b80872de19, type: 2}
   patienceTime: 25
   paymentAmount: 500
+  orderList:
+  - {fileID: 11400000, guid: 90072d23d7e5677499b047b80872de19, type: 2}
+  GuestPattern: {fileID: 11400000, guid: 2058b8d6e10967a43937bf7a2e1de7eb, type: 2}

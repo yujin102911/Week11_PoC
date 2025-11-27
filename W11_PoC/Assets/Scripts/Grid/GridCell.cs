@@ -3,12 +3,16 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
 
-public class GridCell : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class GridCell : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, IDragHandler, IEndDragHandler,
+    IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     public Vector2Int Coordinate { get; private set; }
     public bool IsOccupied { get; private set; }
     public PlacedBlockInfo PlacedBlock { get; private set; }
     public Grid OwnerGrid { get; private set; }
+
+    public GraphicRaycaster raycaster;
+    public EventSystem eventSystem;
 
     [SerializeField] private Image cellImage;
 
@@ -29,8 +33,11 @@ public class GridCell : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
     private GameObject dragVisual;
     private RectTransform dragVisualRect;
 
+    private float clickBlockTimer = 0f;
+
     private void Awake()
     {
+        raycaster = GetComponentInParent<GraphicRaycaster>();
         canvasGroup = GetComponent<CanvasGroup>();
         if (canvasGroup == null)
             canvasGroup = gameObject.AddComponent<CanvasGroup>();
@@ -38,14 +45,31 @@ public class GridCell : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
 
     private void Update()
     {
+        if (clickBlockTimer > 0)
+            clickBlockTimer -= Time.deltaTime;
+
         if (isDraggingBlock && draggingBlockInfo != null)
         {
             HandleRotationInput();
+            UpdatePreviewAtPointer();
 
             // 드래그 비주얼 위치 업데이트
             if (dragVisual != null)
             {
                 dragVisual.transform.position = Input.mousePosition;
+            }
+
+
+            if (Input.GetMouseButtonDown(0) && !(clickBlockTimer > 0))
+            {
+                Debug.Log("놓기");
+                DropCell();
+            }
+
+            if (Input.GetMouseButtonDown(1))
+            {
+                Debug.Log("회전");
+                RotateDraggingBlock(true);
             }
         }
     }
@@ -62,7 +86,11 @@ public class GridCell : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
 
     private void RotateDraggingBlock(bool clockwise)
     {
+        Debug.Log("draggingBlockInfo is null? : " + (draggingBlockInfo == null));
+        Debug.Log("draggingBlockInfo.Shape is null? : " + (draggingBlockInfo.Shape == null));
+
         if (draggingBlockInfo == null || draggingBlockInfo.Shape == null) return;
+        
 
         List<Vector2Int> currentShape = draggingBlockInfo.Shape;
         List<Vector2Int> rotatedShape = new List<Vector2Int>();
@@ -183,19 +211,207 @@ public class GridCell : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
             cellImage.color = defaultColor;
     }
 
-    #region 배치된 블록 드래그 (그리드 간 이동)
+    // 셀 가리기
+    public void HideSell()
+    {
+        IsOccupied = true;
+        cellImage.color = new Color(cellImage.color.r, cellImage.color.g, cellImage.color.b, 0f);
+    }
 
-    // 클릭 즉시 드래그 준비 상태 확인
+    public void MouseOverColor(bool isExit)
+    {
+        if (isExit)
+        {
+            cellImage.color = new Color(cellImage.color.r, cellImage.color.g, cellImage.color.b, 1.0f);
+        }
+        else
+        {
+            cellImage.color = new Color(cellImage.color.r, cellImage.color.g, cellImage.color.b, 0.75f);
+        }
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Left
+            && IsOccupied
+            && PlacedBlock != null)
+        {
+            //Debug.Log("셀 왼쪽 클릭");
+            //PickUpCellToBlock();
+        }
+    }
+
+    // 마우스 충돌시
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (OwnerGrid != null && IsOccupied && PlacedBlock != null)
+        {
+            //색상 투명화
+            OwnerGrid.HighLightWithShape(PlacedBlock.Origin, PlacedBlock.Shape, false);
+        }
+    }
+
+    // 마우스가 나갔을 때
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (OwnerGrid != null && IsOccupied && PlacedBlock != null)
+        {
+            //색상 원복
+            OwnerGrid.HighLightWithShape(PlacedBlock.Origin, PlacedBlock.Shape, true);
+        }
+    }
+
+    private void PickUpCellToBlock()
+    {
+        clickBlockTimer = 0.1f;   // 배치 직후 0.1초간 클릭 무효
+
+        isAnyDragging = true;
+        isDraggingBlock = true;
+
+        draggingBlockInfo = PlacedBlock;
+        originalGrid = OwnerGrid;
+
+        // 원래 상태 저장 (복귀용)
+        originalOrigin = draggingBlockInfo.Origin;
+        originalShape = new List<Vector2Int>(draggingBlockInfo.Shape);
+
+        OwnerGrid.RemovePlacedBlock(draggingBlockInfo);
+        CreateDragVisual();
+        canvasGroup.blocksRaycasts = false;
+    }
+
+    private void DropCell()
+    {
+        if (!isDraggingBlock || draggingBlockInfo == null)
+        {
+            ResetDragState();
+            return;
+        }
+
+        DestroyDragVisual();
+
+        // SpawnPanel 위에 드롭했는지 체크
+        if (BlockSpawner.Instance != null
+            && BlockSpawner.Instance.gameObject.activeInHierarchy
+            && BlockSpawner.Instance.IsPointerOverSpawnArea(Input.mousePosition))
+        {
+            BlockItem createdBlock = BlockSpawner.Instance.CreateBlockItemFromPlaced(draggingBlockInfo, Input.mousePosition);
+
+            if (createdBlock == null)
+            {
+                ReturnBlockToOriginalPosition();
+            }
+
+            GridManager.Instance.ClearAllPreviews();
+            ResetDragState();
+            return;
+        }
+
+        // 1) 드롭된 위치에서 UI 레이캐스트
+        // 1) PointerEventData에 마우스 위치만 넣어서 사용
+        PointerEventData ped = new PointerEventData(eventSystem);
+        ped.position = Input.mousePosition;
+
+        List<RaycastResult> results = new List<RaycastResult>();
+        raycaster.Raycast(ped, results);
+        //List<RaycastResult> results = new List<RaycastResult>();
+        //EventSystem.current.RaycastAll(eventData, results);
+
+        foreach (var r in results)
+        {
+            // 2) 드롭된 위치에서 원하는 컴포넌트가 붙은 대상 찾기
+            var target = r.gameObject.GetComponentInParent<FreeBlockPanel>();
+            if (target != null
+                && target.gameObject.activeInHierarchy
+                && target.IsPointerOverSpawnArea(Input.mousePosition)
+                && target.CheckSize())
+            {
+                Debug.Log("찾았다! → " + target.name);
+                // target 변수로 참조 작업
+                BlockItem createdBlock = target.CreateBlockItemFromPlaced(draggingBlockInfo, Input.mousePosition);
+
+                if (createdBlock == null)
+                {
+                    ReturnBlockToOriginalPosition();
+                }
+
+                GridManager.Instance.ClearAllPreviews();
+                ResetDragState();
+                return;
+            }
+        }
+
+        // 그리드 찾기
+        Grid targetGrid = GridManager.Instance.GetGridAtScreenPos(Input.mousePosition);
+        bool placed = false;
+
+        if (targetGrid != null)
+        {
+            Vector2Int gridPos = targetGrid.GetGridIndexFromWorldPos(Input.mousePosition);
+            // 중심 기준 shape로 배치 시도
+            List<Vector2Int> centeredShape = GetCenteredShape(draggingBlockInfo.Shape);
+
+            // 원본 shape 백업
+            var originalShape = new List<Vector2Int>(draggingBlockInfo.Shape);
+            draggingBlockInfo.Shape = centeredShape;
+
+            placed = targetGrid.TryPlaceWithInfo(gridPos, draggingBlockInfo);
+
+            // 배치 실패시 원래 shape 복원
+            if (!placed)
+            {
+                draggingBlockInfo.Shape = originalShape;
+            }
+        }
+
+        // 배치 실패 시 원래 그리드, 원래 위치로 복귀
+        if (!placed)
+        {
+            ReturnBlockToOriginalPosition();
+        }
+
+        GridManager.Instance.ClearAllPreviews();
+        ResetDragState();
+    }
+
+    // 클릭 관련
     public void OnPointerDown(PointerEventData eventData)
     {
-        // 다른 드래그가 진행 중이면 무시
+        //Debug.Log(isDraggingBlock);
+        
+        if (isDraggingBlock)
+        {
+            if (eventData.button == PointerEventData.InputButton.Left)
+            {
+                //Debug.Log("놓기");
+                //DropCell();
+            }
+            
+            if (eventData.button == PointerEventData.InputButton.Right)
+            {
+                //Debug.Log("회전");
+                //RotateDraggingBlock(true);
+            }
+            return;
+        }
+
+        // 다른 드래그가 진행 중일때
         if (isAnyDragging) return;
 
         // 이 셀이 비어있으면 무시
         if (!IsOccupied || PlacedBlock == null) return;
 
         // 드래그 가능 상태임을 표시 (시각적 피드백 등 추가 가능)
+        if (eventData.button == PointerEventData.InputButton.Left)
+        {
+            Debug.Log("셀 왼쪽 클릭");
+            PickUpCellToBlock();
+        }
     }
+
+    #region 배치된 블록 드래그 (그리드 간 이동)
+
+
 
     public void OnBeginDrag(PointerEventData eventData)
     {
@@ -249,6 +465,34 @@ public class GridCell : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
             GridManager.Instance.ClearAllPreviews();
             ResetDragState();
             return;
+        }
+
+        // 1) 드롭된 위치에서 UI 레이캐스트
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventData, results);
+
+        foreach (var r in results)
+        {
+            // 2) 드롭된 위치에서 원하는 컴포넌트가 붙은 대상 찾기
+            var target = r.gameObject.GetComponentInParent<FreeBlockPanel>();
+            if (target != null
+                && target.gameObject.activeInHierarchy
+                && target.IsPointerOverSpawnArea(eventData.position)
+                && target.CheckSize())
+            {
+                Debug.Log("찾았다! → " + target.name);
+                // target 변수로 참조 작업
+                BlockItem createdBlock =  target.CreateBlockItemFromPlaced(draggingBlockInfo, eventData.position);
+                
+                if (createdBlock == null)
+                {
+                    ReturnBlockToOriginalPosition();
+                }
+
+                GridManager.Instance.ClearAllPreviews();
+                ResetDragState();
+                return;
+            }
         }
 
         // 그리드 찾기
@@ -382,7 +626,6 @@ public class GridCell : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
             dragVisualRect = null;
         }
     }
-
     #endregion
 }
 /// <summary>

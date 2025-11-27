@@ -1,6 +1,7 @@
 ﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using VInspector;
 
 public class UIManager : MonoBehaviour
 {
@@ -24,18 +25,23 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI _timerTxt;
 
+    [Tab("제출 패널")]
     [Header("Submit")]
     [SerializeField]
     private GameObject _submitPanel;
     [SerializeField]
-    private GameObject _submitGrid;
+    private Grid _submitGrid;
+    [SerializeField]
+    private Button _submitButton;
 
+    [Tab("입고 패널")]
     [Header("Spwan")]
     [SerializeField]
     private GameObject _spwanPanel;
     [SerializeField]
     private Button _playButton;
 
+    [Tab("저장 박스 패널")]
     [Header("Storage")]
     [SerializeField]
     private GameObject _storagePanel;
@@ -44,6 +50,15 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI _storageTxt;
 
+    [Tab("자유블록 박스 패널")]
+    [SerializeField]
+    private GameObject _freeBlockPanel;
+    [SerializeField]
+    private FreeBlockPanel[] _blockArea;
+    [SerializeField]
+    private TextMeshProUGUI _freeBlockTxt;
+
+    [Tab("종료 패널")]
     [Header("Finish")]
     [SerializeField]
     private GameObject _finishPanel;
@@ -52,6 +67,7 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private Button _nextButton;
 
+    [Tab("플레이어 가방")]
     [Header("Finish")]
     [SerializeField]
     private GameObject _invenPanel;
@@ -74,6 +90,98 @@ public class UIManager : MonoBehaviour
         {
             OffStorage();
         }
+    }
+
+
+    #region 종료 패널
+    public void OpenFinish()
+    {
+        _finishPanel.SetActive(true);
+        _resultTxt.text = $"점수: +{GameManager.Instance.StagePointed}";
+
+        _nextButton.onClick.RemoveAllListeners();
+        _nextButton.onClick.AddListener(ClickNextBtn);
+
+        Time.timeScale = 0f;
+    }
+
+    public void ClickNextBtn()
+    {
+        Time.timeScale = 1.0f;
+
+        if(GameManager.Instance.GetPhase() == Phase.sell )
+            GameManager.Instance.ChangePhase(Phase.prepare);
+        GameManager.Instance.StartPhase();
+
+        _finishPanel.SetActive(false);
+    }
+    #endregion
+
+    #region 제출 패널
+    public void OpenSubmit(GuestPattern guestPattern,bool is_new)
+    {
+        _submitPanel.SetActive(true);
+        _submitGrid.gameObject.SetActive(true);
+
+        //새로운 버전일때만 패턴 넘기기
+        if (is_new)
+        {
+            _submitGrid.SetGrid(guestPattern);
+        }
+        else
+        {
+            _submitGrid.SetGrid(null);
+            Is_panel = true;
+        }
+
+        
+    }
+
+    public void OffSubmit()
+    {
+        _submitPanel.SetActive(false);
+        _submitGrid.gameObject.SetActive(false);
+        Is_panel = false;
+    }
+
+    public void ClickSubmitBtn()
+    {
+        _submitButton.interactable = false;
+        OffSubmit();
+        //점수 계산
+        GuestManager.Instance.GridSuccess();
+    }
+
+    // 제출 Grid에서 판단
+    public void ActiveSubmitBtn()
+    {
+        _submitButton.interactable = true;
+
+        _submitButton.onClick.RemoveAllListeners();
+        _submitButton.onClick.AddListener(ClickSubmitBtn);
+    }
+
+    public void UnActiveSubmitBtn()
+    {
+        _submitButton.interactable = false;
+
+        _submitButton.onClick.RemoveAllListeners();
+    }
+    #endregion
+
+    #region 입고 박스
+    public void OpenSpwan()
+    {
+        _spwanPanel.SetActive(true);
+        //이제 정리 페이즈에서는 플레이어 없음
+        //Is_panel = true;
+    }
+
+    public void OffSpwan()
+    {
+        _spwanPanel.SetActive(false);
+        //이제 정리 페이즈에서는 플레이어 없음
+        //Is_panel = false;
     }
 
     public void ClickPlayBtn()
@@ -100,57 +208,9 @@ public class UIManager : MonoBehaviour
 
         _playButton.onClick.RemoveAllListeners();
     }
+    #endregion
 
-    public void OpenFinish()
-    {
-        _finishPanel.SetActive(true);
-        _resultTxt.text = $"점수: +{GameManager.Instance.StagePointed}";
-
-        _nextButton.onClick.RemoveAllListeners();
-        _nextButton.onClick.AddListener(ClickNextBtn);
-
-        Time.timeScale = 0f;
-    }
-
-    public void ClickNextBtn()
-    {
-        Time.timeScale = 1.0f;
-
-
-        GameManager.Instance.ChangePhase(Phase.prepare);
-        GameManager.Instance.StartPhase();
-
-        _finishPanel.SetActive(false);
-    }
-
-    public void OpenSubmit()
-    {
-        _submitPanel.SetActive(true);
-        _submitGrid.SetActive(true);
-        Is_panel = true;
-    }
-
-    public void OffSubmit()
-    {
-        _submitPanel.SetActive(false);
-        _submitGrid.SetActive(false);
-        Is_panel = false;
-    }
-
-    public void OpenSpwan()
-    {
-        _spwanPanel.SetActive(true);
-        //이제 정리 페이즈에서는 플레이어 없음
-        //Is_panel = true;
-    }
-
-    public void OffSpwan()
-    {
-        _spwanPanel.SetActive(false);
-        //이제 정리 페이즈에서는 플레이어 없음
-        //Is_panel = false;
-    }
-
+    #region 인벤토리
     public void OpenInven()
     {
         _invenPanel.SetActive(true);
@@ -160,7 +220,9 @@ public class UIManager : MonoBehaviour
     {
         _invenPanel.SetActive(false);
     }
+#endregion
 
+    #region 저장 박스
     //저장 박스 패널 열기
     public void OpenStorage(string id)
     {
@@ -200,7 +262,36 @@ public class UIManager : MonoBehaviour
 
         Is_panel = false;
     }
+    #endregion
 
+    //저장 박스 패널 열기
+    public void OpenFreeBlock(string id)
+    {
+        _freeBlockPanel.SetActive(true);
+
+        if (int.TryParse(id, out int value))
+        {
+            _blockArea[value - 1].gameObject.SetActive(true);
+            _freeBlockTxt.text = id + "번 상자";
+        }
+
+        Is_panel = true;
+    }
+
+    public void OffFreeBlock()
+    {
+        for (int i = 0; i < _blockArea.Length; i++)
+        {
+            _blockArea[i].gameObject.SetActive(false);
+        }
+
+        _freeBlockPanel.SetActive(false);
+
+        Is_panel = false;
+    }
+
+
+    //타이머 게이지 줄어드는 효과
     public void UpdateTimeGauge(float c, float m)
     {
         if (_timeGauge != null)

@@ -6,6 +6,7 @@ public class ItemPickup : MonoBehaviour, IInteractable
     {
         Box,
         PrepareBox,
+        FreeBlock,
         customer
     }
 
@@ -23,7 +24,7 @@ public class ItemPickup : MonoBehaviour, IInteractable
         if (type.Equals(Type.customer))
         {
             //판매 패널
-            UIManager.Instance.OpenSubmit();
+            UIManager.Instance.OpenSubmit(null, false);
         }
         else if (type.Equals(Type.PrepareBox))
         {
@@ -35,6 +36,10 @@ public class ItemPickup : MonoBehaviour, IInteractable
             //박스 패널
             UIManager.Instance.OpenStorage(itemId);
         }
+        else if (type.Equals(Type.FreeBlock))
+        {
+            UIManager.Instance.OpenFreeBlock(itemId);
+        }
 
 
             
@@ -45,14 +50,14 @@ public class ItemPickup : MonoBehaviour, IInteractable
 
     private void OnMouseEnter()
     {
-        if (UIManager.Instance.Is_panel) return;
+        if (UIManager.Instance.Is_panel || GameManager.Instance.GetPhase().Equals(Phase.sell)) return;
 
         SetHighlight();
     }
 
     private void OnMouseOver()
     {
-        if (UIManager.Instance.Is_panel) return;
+        if (UIManager.Instance.Is_panel || GameManager.Instance.GetPhase().Equals(Phase.sell)) return;
 
         if (Input.GetMouseButtonDown(0)) 
         {
@@ -65,7 +70,7 @@ public class ItemPickup : MonoBehaviour, IInteractable
 
     private void OnMouseExit()
     {
-        if (UIManager.Instance.Is_panel) return;
+        if (UIManager.Instance.Is_panel || GameManager.Instance.GetPhase().Equals(Phase.sell)) return;
 
         RestoreAlpha();
     }
