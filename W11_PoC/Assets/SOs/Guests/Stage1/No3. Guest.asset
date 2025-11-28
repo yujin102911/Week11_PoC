@@ -17,6 +17,6 @@ MonoBehaviour:
   patienceTime: 25
   paymentAmount: 800
   orderList:
-  - {fileID: 11400000, guid: 5aec2278f45ac1a46918094715fa7a70, type: 2}
-  - {fileID: 11400000, guid: f18f329e3b373264b86154b63f13da10, type: 2}
+  - {fileID: 11400000, guid: c8c00b89b01acc34f8f9c9ba8dd5ece1, type: 2}
+  - {fileID: 11400000, guid: 1470f5872fcfaf942b7eed692693c47b, type: 2}
   GuestPattern: {fileID: 11400000, guid: 4d6b87cde8901b7488081c35cf8f3dd3, type: 2}

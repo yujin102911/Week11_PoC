@@ -17,4 +17,4 @@ MonoBehaviour:
   BlockSprite: {fileID: 5858479730459764560, guid: 4e314d77cff3e304eb64a7490854f59a, type: 3}
   shape:
   - {x: 0, y: 0}
-  - {x: 1, y: 1}
+  - {x: -1, y: 1}
