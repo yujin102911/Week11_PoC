@@ -4,12 +4,16 @@ public enum Phase
 {
     None,
     prepare,
-    sell
+    sell, 
+    New_mode
 }
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
+
+    [Header("Is_new")]
+    public bool Is_new;
 
     [Header("Object")]
     [SerializeField]
@@ -41,14 +45,22 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         //게임 시작
-        ChangePhase(Phase.prepare);
+        if (Is_new)
+        {
+            ChangePhase(Phase.New_mode);
+        }
+        else
+        {
+            ChangePhase(Phase.prepare);
+        }
+            
         StartPhase();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (_phase == Phase.sell)
+        if (_phase == Phase.sell || _phase == Phase.New_mode)
         {
             CurrentTime -= Time.deltaTime;
             UIManager.Instance.UpdateTimeGauge(CurrentTime, MaxTime);
@@ -64,6 +76,11 @@ public class GameManager : MonoBehaviour
     private void FixedUpdate()
     {
         //CurrentTime -= Time.deltaTime;
+    }
+
+    public Phase GetPhase()
+    {
+        return _phase;
     }
 
     public void ChangePhase(Phase next)
@@ -98,10 +115,17 @@ public class GameManager : MonoBehaviour
                 CurrentStage++;
                 
                 break;
+
+            case Phase.New_mode:
+                CurrentTime = MaxTime;
+                GuestManager.Instance.LoadStage(CurrentStage);
+                CurrentStage++;
+                return;
         }
 
         UIManager.Instance.UpdatePhaseMessage(_phase);
     }
+
     public void QuitGame()
     {
 #if UNITY_EDITOR

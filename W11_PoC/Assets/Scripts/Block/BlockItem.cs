@@ -3,7 +3,8 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
-public class BlockItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler, IPointerClickHandler
+
+public class BlockItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler, IPointerClickHandler, IDropHandler, IPointerEnterHandler, IPointerExitHandler
 {
     [Header("데이터")]
     public BlockData blockData;
@@ -13,6 +14,9 @@ public class BlockItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
     [SerializeField] private GameObject cellVisualPrefab;
     [SerializeField] private float visualCellSize = 40f;
     [SerializeField] private float visualSpacing = 4f;
+
+    public GraphicRaycaster raycaster;
+    public EventSystem eventSystem;
 
     private RectTransform rectTransform;
     private CanvasGroup canvasGroup;
@@ -26,18 +30,34 @@ public class BlockItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
     private bool isDragging = false;
     private Grid currentHoverGrid = null; // 현재 마우스가 위치한 그리드
 
+    private FreeBlockPanel _ownerPanel;
+
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
         if (canvasGroup == null) canvasGroup = gameObject.AddComponent<CanvasGroup>();
+
+        raycaster = GetComponentInParent<GraphicRaycaster>();
     }
 
     private void Update()
     {
         if (isDragging)
         {
+            FollowMouse();
             HandleRotationInput();
+
+            if (Input.GetMouseButtonDown(0)) 
+            {
+                isDragging = false;
+                DropBlock();
+            }
+
+            if (Input.GetMouseButtonDown(1))
+            {
+                RotateShape(true);
+            }
         }
     }
 
@@ -101,25 +121,141 @@ public class BlockItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
             GridManager.Instance.ShowPreview(currentHoverGrid, gridPos, currentShape, blockData.blockColor);
         }
     }
+
+    private void FollowMouse()
+    {
+        transform.position = Input.mousePosition;
+
+        if (GridManager.Instance == null) return;
+
+        // 현재 위치에서 그리드 찾기
+        currentHoverGrid = GridManager.Instance.GetGridAtScreenPos(Input.mousePosition);
+
+        if (currentHoverGrid != null)
+        {
+            Vector2Int gridPos = currentHoverGrid.GetGridIndexFromWorldPos(Input.mousePosition);
+            GridManager.Instance.ShowPreview(currentHoverGrid, gridPos, currentShape, blockData.blockColor);
+        }
+        else
+        {
+            GridManager.Instance.ClearAllPreviews();
+        }
+    }
+
     public void OnPointerClick(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Left)
+        {
             Debug.Log("왼쪽 클릭");
-        else if (eventData.button == PointerEventData.InputButton.Right)
-            Debug.Log("오른쪽 클릭");
-        else if (eventData.button == PointerEventData.InputButton.Middle)
-            Debug.Log("휠 클릭");
+
+            if (!isDragging)
+            {
+                isDragging = true;
+                PickUpBlock();
+            }
+                
+        }
+            
     }
 
-
-    public void OnBeginDrag(PointerEventData eventData)
+    // 블럭 들기
+    private void PickUpBlock()
     {
         startPosition = transform.position;
         isDragging = true;
 
+        Canvas canvas = GetComponentInParent<Canvas>();
+        if (canvas == null) return;
+
+        transform.SetParent(canvas.transform, false);
+
+
         transform.SetAsLastSibling();
         canvasGroup.alpha = 0.6f;
         canvasGroup.blocksRaycasts = false;
+
+        if (_ownerPanel != null)
+            _ownerPanel.OnBlockUsed(this);
+    }
+
+    // 블럭 놓기
+    private void DropBlock()
+    {
+        canvasGroup.alpha = 1f;
+        canvasGroup.blocksRaycasts = true;
+        isDragging = false;
+
+        if (GridManager.Instance == null)
+        {
+            transform.position = startPosition;
+            return;
+        }
+
+        // 현재 위치에서 그리드 찾기
+        Grid targetGrid = GridManager.Instance.GetGridAtScreenPos(Input.mousePosition);
+        bool placed = false;
+
+        if (targetGrid != null)
+        {
+
+            Vector2Int gridPos = targetGrid.GetGridIndexFromWorldPos(Input.mousePosition);
+            placed = targetGrid.TryPlaceBlockWithShape(gridPos, currentShape, blockData);
+        }
+
+        // 놓았으면 사용되었음을 알려주고 자신 파괴
+        if (placed)
+        {
+            if (BlockSpawner.Instance != null)
+                BlockSpawner.Instance.OnBlockUsed(this);
+
+            if (_ownerPanel != null)
+                //_ownerPanel.OnBlockUsed(this);
+
+            Destroy(gameObject);
+        }
+        // 아니면 출발한 위치로 복귀
+        else
+        {
+            // 1) PointerEventData에 마우스 위치만 넣어서 사용
+            PointerEventData ped = new PointerEventData(eventSystem);
+            ped.position = Input.mousePosition;
+
+            List<RaycastResult> results = new List<RaycastResult>();
+            raycaster.Raycast(ped, results);
+
+            foreach (var r in results)
+            {
+                // 2) 드롭된 위치에서 원하는 컴포넌트가 붙은 대상 찾기
+                var target = r.gameObject.GetComponentInParent<FreeBlockPanel>();
+                if (target != null
+                    && target.gameObject.activeInHierarchy
+                    && target.IsPointerOverSpawnArea(Input.mousePosition)
+                    && target.CheckSize())
+                {
+                    Debug.Log("찾았다! → " + target.name);
+                    // target 변수로 참조 작업
+
+
+                    target.CreateBlockItemReturned(blockData, currentShape, Input.mousePosition);
+                    GridManager.Instance.ClearAllPreviews();
+                    currentHoverGrid = null;
+                    Destroy(gameObject);
+                    return;
+                }
+            }
+            transform.position = startPosition;
+
+            if (_ownerPanel != null)
+                _ownerPanel.RecoverBlock(this);
+        }
+
+        GridManager.Instance.ClearAllPreviews();
+        currentHoverGrid = null;
+    }
+
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        PickUpBlock();
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -165,20 +301,54 @@ public class BlockItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
             placed = targetGrid.TryPlaceBlockWithShape(gridPos, currentShape, blockData);
         }
 
+        // 놓았으면 사용되었음을 알려주고 자신 파괴
         if (placed)
         {
             if (BlockSpawner.Instance != null)
                 BlockSpawner.Instance.OnBlockUsed(this);
 
+            if (_ownerPanel != null)
+                _ownerPanel.OnBlockUsed(this);
+            
             Destroy(gameObject);
         }
+        // 아니면 출발한 위치로 복귀
         else
         {
+            // 1) 드롭된 위치에서 UI 레이캐스트
+            List<RaycastResult> results = new List<RaycastResult>();
+            EventSystem.current.RaycastAll(eventData, results);
+
+            foreach (var r in results)
+            {
+                // 2) 드롭된 위치에서 원하는 컴포넌트가 붙은 대상 찾기
+                var target = r.gameObject.GetComponentInParent<FreeBlockPanel>();
+                if (target != null
+                    && target.gameObject.activeInHierarchy
+                    && target.IsPointerOverSpawnArea(eventData.position)
+                    && target.CheckSize())
+                {
+                    Debug.Log("찾았다! → " + target.name);
+                    // target 변수로 참조 작업
+                    
+
+                    target.CreateBlockItemReturned(blockData, currentShape, eventData.position);
+                    GridManager.Instance.ClearAllPreviews();
+                    currentHoverGrid = null;
+                    Destroy(gameObject);
+                    return;
+                }
+            }
             transform.position = startPosition;
+
+            if (_ownerPanel != null)
+                _ownerPanel.RecoverBlock(this);
         }
 
         GridManager.Instance.ClearAllPreviews();
         currentHoverGrid = null;
+
+        
     }
 
     public void SetupVisuals(BlockData data)
@@ -287,6 +457,7 @@ public class BlockItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
 
     public List<Vector2Int> GetCurrentShape() => currentShape;
 
+    // 스폰 패널에 다시 놓아질때 블록 정보를 업데이트
     public void SetupFromPlacedInfo(PlacedBlockInfo blockInfo)
     {
         if (blockInfo == null) return;
@@ -296,5 +467,51 @@ public class BlockItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
         currentRotation = 0;
 
         UpdateVisuals();
+    }
+
+    public void SetupFromPlacedInfo(BlockData _blockData, List<Vector2Int> _currentShape)
+    {
+        if (_blockData == null) return;
+
+        blockData = _blockData;
+        currentShape = _currentShape;
+        currentRotation = 0;
+
+        UpdateVisuals();
+    }
+
+    //원래 패널 세팅
+    public void OwnerPanelSet(FreeBlockPanel _panel)
+    {
+        _ownerPanel = _panel;
+    }
+
+    public void OnDrop(PointerEventData eventData)
+    {
+        // 1) 드롭된 위치에서 UI 레이캐스트
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventData, results);
+
+        foreach (var r in results)
+        {
+            // 2) 드롭된 위치에서 원하는 컴포넌트가 붙은 대상 찾기
+            var target = r.gameObject.GetComponentInParent<FreeBlockPanel>();
+            if (target != null)
+            {
+                Debug.Log("찾았다! → " + target.name);
+                // target 변수로 참조 작업
+                return;
+            }
+        }
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        canvasGroup.alpha = 0.6f;
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        canvasGroup.alpha = 1.0f;
     }
 }

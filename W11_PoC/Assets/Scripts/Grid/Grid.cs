@@ -20,6 +20,13 @@ public class Grid : MonoBehaviour
     [SerializeField] private RectTransform gridRectTransform;
     [SerializeField] private GridLayoutGroup gridLayoutGroup;
 
+    [Header("비울 그리드 좌표")]
+    [SerializeField] private List<Vector2Int> blockedCells = new List<Vector2Int>();
+
+    [Header("그리드 패턴")]
+    [SerializeField]
+    private GuestPattern _guestPattern;
+
     private GridCell[,] gridArray;
     private List<GridCell> currentHighlightedCells = new List<GridCell>();
 
@@ -38,8 +45,15 @@ public class Grid : MonoBehaviour
 
     private void Start()
     {
-        SetupGridLayout();
-        GenerateGrid();
+        if(_guestPattern != null)
+        {
+            ResizeGrid(_guestPattern.PatternGrid.width, _guestPattern.PatternGrid.height);
+        }
+        else
+        {
+            SetupGridLayout();
+            GenerateGrid();
+        }
 
         // GridManager에 등록
         GridManager.Instance?.RegisterGrid(this);
@@ -48,6 +62,25 @@ public class Grid : MonoBehaviour
     private void OnDestroy()
     {
         GridManager.Instance?.UnregisterGrid(this);
+    }
+
+    //그리드 그리기(일반일때는 null)
+    public void SetGrid(GuestPattern guestPattern)
+    {
+        _guestPattern = guestPattern;
+
+        if (_guestPattern != null)
+        {
+            ResizeGrid(_guestPattern.PatternGrid.width, _guestPattern.PatternGrid.height);
+        }
+        else
+        {
+            SetupGridLayout();
+            GenerateGrid();
+        }
+
+        // GridManager에 등록
+        GridManager.Instance?.RegisterGrid(this);
     }
 
     private void SetupGridLayout()
@@ -81,6 +114,13 @@ public class Grid : MonoBehaviour
                 GridCell newCell = Instantiate(cellPrefab, gridContainer);
                 newCell.name = $"{this.name}_Cell_{x}_{y}";
                 newCell.Init(x, y, this); // Grid 참조 전달
+
+                // 생성 제외할 좌표면 숨기기
+                if (_guestPattern != null && !_guestPattern.PatternGrid.Get(x, y))
+                {
+                    newCell.HideSell();
+                }
+
                 gridArray[x, y] = newCell;
             }
         }
@@ -187,6 +227,36 @@ public class Grid : MonoBehaviour
         return x >= 0 && x < width && y >= 0 && y < height;
     }
 
+    //모든 그리드가 다 채워졌는지
+    public void CheckAllOccupied()
+    {
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                //하나라도 채워지지 않았다면 리턴
+                if(!gridArray[x, y].IsOccupied)
+                {
+                    switch (gridType)
+                    {
+                        case GridType.Serving:
+                            UIManager.Instance.UnActiveSubmitBtn();
+                            break;
+                    }
+                    return;
+                }
+            }
+        }
+
+        // 다 채워졌을때 처리
+        switch (gridType)
+        {
+            case GridType.Serving:
+                UIManager.Instance.ActiveSubmitBtn();
+                break;
+        }
+    }
+
     #endregion
 
     #region Place / Remove Block
@@ -211,6 +281,7 @@ public class Grid : MonoBehaviour
         }
 
         ClearPreview();
+        CheckAllOccupied();
         return true;
     }
 
@@ -261,6 +332,26 @@ public class Grid : MonoBehaviour
             {
                 gridArray[x, y].Clear();
             }
+        }
+    }
+
+    #endregion
+
+    #region HighLight
+
+    public void HighLightWithShape(Vector2Int startCoords, List<Vector2Int> shape, bool isExit)
+    {
+        if (shape == null || shape.Count == 0) return;
+
+        foreach (Vector2Int offset in shape)
+        {
+            int targetX = startCoords.x + offset.x;
+            int targetY = startCoords.y + offset.y;
+
+            if (!IsInBounds(targetX, targetY)) continue;
+
+            GridCell cell = gridArray[targetX, targetY];
+            cell.MouseOverColor(isExit);
         }
     }
 
