@@ -56,7 +56,7 @@ public class Guest : MonoBehaviour
         }
         else
         {
-            if (Is_New)
+            if (!Is_New)
                 HandlePatience();
         }
     }

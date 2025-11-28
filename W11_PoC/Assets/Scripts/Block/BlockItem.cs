@@ -205,13 +205,22 @@ public class BlockItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
         // 놓았으면 사용되었음을 알려주고 자신 파괴
         if (placed)
         {
+            Debug.Log("안함");
+
             if (BlockSpawner.Instance != null)
                 BlockSpawner.Instance.OnBlockUsed(this);
 
             if (_ownerPanel != null)
                 //_ownerPanel.OnBlockUsed(this);
 
+            Debug.Log("Destroy 직전, name = " + gameObject.name);
+            Debug.Log("parent = " + transform.parent);
+            Debug.Log("activeSelf = " + gameObject.activeSelf);
+            Debug.Log("InstanceID = " + gameObject.GetInstanceID());
+
             Destroy(gameObject);
+
+            Debug.Log("왜안죽지?");
         }
         // 아니면 출발한 위치로 복귀
         else
@@ -243,6 +252,7 @@ public class BlockItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
                     return;
                 }
             }
+            
             transform.position = startPosition;
 
             if (_ownerPanel != null)
