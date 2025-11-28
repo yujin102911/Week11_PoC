@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blockName: B_2-1
   blockColor: {r: 0.21960786, g: 0.7137255, b: 0.9960785, a: 1}
-  BlockSprite: {fileID: 478408271, guid: 445fe0f25ee99a249af3994946da193d, type: 3}
+  BlockSprite: {fileID: 725494343, guid: 9177bd9e915737848a3fdea9e69edb41, type: 3}
   shape:
   - {x: 0, y: 0}
   - {x: 1, y: 0}
