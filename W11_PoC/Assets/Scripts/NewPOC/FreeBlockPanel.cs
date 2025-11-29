@@ -80,6 +80,17 @@ public class FreeBlockPanel : MonoBehaviour
         return true;
     }
 
+    //블럭 이미지들 초기화
+    public void SpawnAreaClear()
+    {
+        if (spawnArea == null) return;
+
+        for (int i = 0; i < spawnArea.childCount; i++)
+        {
+            Destroy(spawnArea.GetChild(i));
+        }
+    }
+
     /// <summary>
     /// DB의 블록들을 섞어서 큐에 넣기
     /// </summary>

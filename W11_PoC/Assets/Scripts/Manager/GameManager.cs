@@ -5,7 +5,8 @@ public enum Phase
     None,
     prepare,
     sell, 
-    New_mode
+    New_sell,
+    New_prepare
 }
 
 public class GameManager : MonoBehaviour
@@ -32,7 +33,9 @@ public class GameManager : MonoBehaviour
     public int TotalPoint;
     public int StagePointed;
 
-
+    [Header("Gold")]
+    public int DefualtGold;
+    public int CurrentGold;
 
     private Phase _phase;
 
@@ -44,10 +47,12 @@ public class GameManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        CurrentGold = DefualtGold;
+
         //게임 시작
         if (Is_new)
         {
-            ChangePhase(Phase.New_mode);
+            ChangePhase(Phase.New_prepare);
         }
         else
         {
@@ -60,7 +65,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_phase == Phase.sell || _phase == Phase.New_mode)
+        if (_phase == Phase.sell || _phase == Phase.New_sell)
         {
             CurrentTime -= Time.deltaTime;
             UIManager.Instance.UpdateTimeGauge(CurrentTime, MaxTime);
@@ -104,8 +109,19 @@ public class GameManager : MonoBehaviour
                 //_prepareBox.SetActive(true);
                 UIManager.Instance.OpenSpwan();
                 _blockSpawner.Is_spawn = false;
-                //BlockSpawner.Instance.Is_spawn = false;
                 break;
+
+            case Phase.New_prepare:
+
+                if (CurrentStage > MaxStage)
+                {
+                    QuitGame();
+                }
+
+                MerchantManager.Instance.SpawnMerchant();
+                CurrentStage++;
+                break;
+
             case Phase.sell:
 
                 PlayerOn();
@@ -116,14 +132,14 @@ public class GameManager : MonoBehaviour
                 
                 break;
 
-            case Phase.New_mode:
+            case Phase.New_sell:
                 CurrentTime = MaxTime;
-                GuestManager.Instance.LoadStage(CurrentStage);
-                CurrentStage++;
-                return;
+                GuestManager.Instance.LoadStage(CurrentStage - 1);
+                break;
         }
 
         UIManager.Instance.UpdatePhaseMessage(_phase);
+        UIManager.Instance.UpdateGold();
     }
 
     public void QuitGame()
@@ -153,6 +169,10 @@ public class GameManager : MonoBehaviour
         StagePointed += point;
         TotalPoint += point;
         UIManager.Instance.UpdatePoint(TotalPoint);
+
+        //골드로직도 한번에 처리(나중에 분리하자)
+        CurrentGold += point;
+        UIManager.Instance.UpdateGold();
     }
 
     //플레이어 온

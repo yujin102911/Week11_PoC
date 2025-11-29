@@ -124,6 +124,9 @@ public class GuestManager : MonoBehaviour
         _currentGuest.Setup(data, counterPoint.position);
 
         Debug.Log($"손님 등장: {data.guestID}");
+
+        _seccuessGuestNum++;
+        UIManager.Instance.UpdateCustomer(_seccuessGuestNum, _maxGuestNum);
     }
 
     // ─────────────────────────────────────────────
@@ -243,7 +246,7 @@ public class GuestManager : MonoBehaviour
         _currentGuest = null;
 
         //성공 판단 체크
-        _seccuessGuestNum++;
+        //_seccuessGuestNum++;
         if (_seccuessGuestNum >= _maxGuestNum)
         {
             GameManager.Instance.RoundClear();
@@ -264,7 +267,7 @@ public class GuestManager : MonoBehaviour
         _currentGuest = null;
 
         //성공 판단 체크
-        _seccuessGuestNum++;
+        //_seccuessGuestNum++;
         if (_seccuessGuestNum >= _maxGuestNum)
         {
             GameManager.Instance.RoundClear();

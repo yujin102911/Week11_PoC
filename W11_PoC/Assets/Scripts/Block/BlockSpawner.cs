@@ -49,7 +49,7 @@ public class BlockSpawner : MonoBehaviour
         //최초 1회 스폰
         if (!Is_spawn)
         {
-            SetBlocks(GameManager.Instance.CurrentStage);
+            SetBlocks(GameManager.Instance.CurrentStage-1);
         }
     }
 

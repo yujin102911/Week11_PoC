@@ -60,7 +60,9 @@ public class GridManager : MonoBehaviour
     {
         foreach (var grid in registeredGrids)
         {
-            if (grid.ContainsScreenPoint(screenPos, uiCamera) && grid.gameObject.activeSelf)
+            //부모 패널 활성화 상태 체크
+            bool isParentActive = grid.transform.parent.gameObject.activeInHierarchy;
+            if (grid.ContainsScreenPoint(screenPos, uiCamera) && grid.gameObject.activeSelf && isParentActive)
             {
                 return grid;
             }

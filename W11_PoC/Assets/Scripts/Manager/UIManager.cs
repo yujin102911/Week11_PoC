@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using System.Drawing;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using VInspector;
@@ -16,6 +17,14 @@ public class UIManager : MonoBehaviour
     [Header("Point")]
     [SerializeField]
     private TextMeshProUGUI _pointTxt;
+
+    [Header("Gold")]
+    [SerializeField]
+    private TextMeshProUGUI _goldTxt;
+
+    [Header("Customer_Num")]
+    [SerializeField]
+    private TextMeshProUGUI _customerTxt;
 
     [Header("Timer")]
     [SerializeField]
@@ -68,9 +77,14 @@ public class UIManager : MonoBehaviour
     private Button _nextButton;
 
     [Tab("플레이어 가방")]
-    [Header("Finish")]
+    [Header("Inven")]
     [SerializeField]
     private GameObject _invenPanel;
+
+    [Tab("상인")]
+    [Header("Merchant")]
+    [SerializeField]
+    private GameObject _merchantPanel;
 
     private void Awake()
     {
@@ -111,6 +125,10 @@ public class UIManager : MonoBehaviour
 
         if(GameManager.Instance.GetPhase() == Phase.sell )
             GameManager.Instance.ChangePhase(Phase.prepare);
+
+        if (GameManager.Instance.GetPhase() == Phase.New_sell)
+            GameManager.Instance.ChangePhase(Phase.New_prepare);
+
         GameManager.Instance.StartPhase();
 
         _finishPanel.SetActive(false);
@@ -133,8 +151,6 @@ public class UIManager : MonoBehaviour
             _submitGrid.SetGrid(null);
             Is_panel = true;
         }
-
-        
     }
 
     public void OffSubmit()
@@ -169,6 +185,18 @@ public class UIManager : MonoBehaviour
     }
     #endregion
 
+    #region 상인
+    public void OpenMerchant()
+    {
+        _merchantPanel.SetActive(true);
+    }
+
+    public void OffMerchant()
+    {
+        _merchantPanel.SetActive(false);
+    }
+    #endregion
+
     #region 입고 박스
     public void OpenSpwan()
     {
@@ -189,7 +217,13 @@ public class UIManager : MonoBehaviour
         _playButton.interactable = false;
         OffSpwan();
 
-        GameManager.Instance.ChangePhase(Phase.sell);
+        if (GameManager.Instance.GetPhase() == Phase.prepare) {
+            GameManager.Instance.ChangePhase(Phase.sell);
+        }
+        else if(GameManager.Instance.GetPhase() == Phase.New_prepare){
+            GameManager.Instance.ChangePhase(Phase.New_sell);
+        }
+
         GameManager.Instance.StartPhase();
     }
 
@@ -302,12 +336,17 @@ public class UIManager : MonoBehaviour
 
     public void UpdatePhaseMessage(Phase phase)
     {
+        Debug.Log("안해?");
+
         switch (phase)
         {
+            case Phase.New_prepare:
             case Phase.prepare:
                 _phaseTxt.text = "준비중...";
                 _timer.SetActive(false);
+                _customerTxt.text = "";
                 break;
+            case Phase.New_sell:
             case Phase.sell:
                 _phaseTxt.text = "영업중...";
                 _timer.SetActive(true);
@@ -317,6 +356,16 @@ public class UIManager : MonoBehaviour
     public void UpdatePoint(int point)
     {
         _pointTxt.text = $"점수: {point}";
+    }
+
+    public void UpdateGold()
+    {
+        _goldTxt.text = $"G: " + string.Format("{0:#,###}", GameManager.Instance.CurrentGold);
+    }
+
+    public void UpdateCustomer(int c, int max)
+    {
+        _customerTxt.text = $"손님: ({c} / {max})";
     }
 
 }
