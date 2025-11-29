@@ -30,12 +30,15 @@ public class Grid : MonoBehaviour
     private GridCell[,] gridArray;
     private List<GridCell> currentHighlightedCells = new List<GridCell>();
 
+    private int _gold = 0;
+
     // 프로퍼티
     public string GridId => gridId;
     public GridType Type => gridType;
     public int Width => width;
     public int Height => height;
     public RectTransform RectTransform => gridRectTransform;
+    public int Gold => _gold;
 
     private void Awake()
     {
@@ -257,6 +260,50 @@ public class Grid : MonoBehaviour
         }
     }
 
+    //배치된 블럭수
+    public void CheckPlacedBlock()
+    {
+        if (gridType != GridType.Serving) return;
+
+        GuestData _guestData = new GuestData();
+
+        if (GuestManager.Instance != null)
+            _guestData = GuestManager.Instance.CurrentGuest.GetData();
+        
+        int price = 0;
+
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                //놓아진 블럭이있을때
+                if (gridArray[x, y].PlacedBlock != null )
+                {
+                    PlacedBlockInfo block = gridArray[x, y].PlacedBlock;
+                    if((int)_guestData.P_Request == (int)block.requestType)
+                    {
+                        //원하는 요구사항에 맞는 블럭일때(계산식은 추후 수정)
+                        price += 110;
+                    }
+                    else if ((int)_guestData.N_Request == (int)block.requestType)
+                    {
+                        //원하지 않는 요구사항에 맞는 블럭일때(계산식은 추후 수정)
+                        price += 50;
+                    }
+                    else
+                    {
+                        price += 100;
+                    }
+                }
+            }
+        }
+
+        UIManager.Instance.UpdatePrice(price);
+
+        _gold = price;
+        Debug.Log($"{price} 받을듯?");
+    }
+
     #endregion
 
     #region Place / Remove Block
@@ -269,6 +316,7 @@ public class Grid : MonoBehaviour
             startCoords,
             shape,
             blockData.blockColor,
+            blockData.requestType,
             blockData,
             this // 어느 그리드에 배치됐는지 저장
         );
@@ -282,6 +330,7 @@ public class Grid : MonoBehaviour
 
         ClearPreview();
         CheckAllOccupied();
+        CheckPlacedBlock();
         return true;
     }
 
@@ -316,6 +365,8 @@ public class Grid : MonoBehaviour
                 gridArray[targetX, targetY].Clear();
             }
         }
+
+        CheckPlacedBlock();
     }
 
     public void ClearCell(int x, int y)
@@ -333,6 +384,8 @@ public class Grid : MonoBehaviour
                 gridArray[x, y].Clear();
             }
         }
+
+        _gold = 0;
     }
 
     #endregion

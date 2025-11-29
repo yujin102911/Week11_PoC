@@ -9,6 +9,9 @@ public class BlockData : ScriptableObject
     public string blockName;
     public Color blockColor = Color.white;
 
+    [Header("블럭 타입(현재는 색깔)")]
+    public Request_Type requestType = Request_Type.None;
+
     [Header("이미지")]
     public Sprite BlockSprite;
 

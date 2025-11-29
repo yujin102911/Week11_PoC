@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Diagnostics;
+using System.Drawing;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -42,6 +43,10 @@ public class UIManager : MonoBehaviour
     private Grid _submitGrid;
     [SerializeField]
     private Button _submitButton;
+    [SerializeField]
+    private TextMeshProUGUI _requestTxt;
+    [SerializeField]
+    private TextMeshProUGUI _priceTxt;
 
     [Tab("입고 패널")]
     [Header("Spwan")]
@@ -136,10 +141,13 @@ public class UIManager : MonoBehaviour
     #endregion
 
     #region 제출 패널
-    public void OpenSubmit(GuestPattern guestPattern,bool is_new)
+    public void OpenSubmit(GuestPattern guestPattern, bool is_new, string message="")
     {
         _submitPanel.SetActive(true);
         _submitGrid.gameObject.SetActive(true);
+
+        if (_requestTxt != null)
+            _requestTxt.text = "요구사항: " + message;
 
         //새로운 버전일때만 패턴 넘기기
         if (is_new)
@@ -151,6 +159,8 @@ public class UIManager : MonoBehaviour
             _submitGrid.SetGrid(null);
             Is_panel = true;
         }
+
+        UpdatePrice(0);
     }
 
     public void OffSubmit()
@@ -336,8 +346,6 @@ public class UIManager : MonoBehaviour
 
     public void UpdatePhaseMessage(Phase phase)
     {
-        Debug.Log("안해?");
-
         switch (phase)
         {
             case Phase.New_prepare:
@@ -366,6 +374,11 @@ public class UIManager : MonoBehaviour
     public void UpdateCustomer(int c, int max)
     {
         _customerTxt.text = $"손님: ({c} / {max})";
+    }
+
+    public void UpdatePrice(int price)
+    {
+        _priceTxt.text = $"예상 가격: G {price}";
     }
 
 }

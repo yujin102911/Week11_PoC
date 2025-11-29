@@ -103,7 +103,7 @@ public class Guest : MonoBehaviour
     // 도착하고 그리드 패턴 넘겨주기
     private void sendPattern()
     {
-        UIManager.Instance.OpenSubmit(_data.GuestPattern, Is_New);
+        UIManager.Instance.OpenSubmit(_data.GuestPattern, Is_New, _data.RequestMessage);
     }
 
     // 주문 UI 갱신 (ㄴ자: 2개, .자: 1개 형식으로 텍스트 조합)

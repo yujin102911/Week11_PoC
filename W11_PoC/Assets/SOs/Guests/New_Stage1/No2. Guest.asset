@@ -19,3 +19,7 @@ MonoBehaviour:
   orderList:
   - {fileID: 11400000, guid: e067cfeda275dd94fae5684f23650fa4, type: 2}
   GuestPattern: {fileID: 11400000, guid: 3e2bb3be13bda7d40a7a91c573b10b56, type: 2}
+  P_Request: 1
+  N_Request: 0
+  RequestMessage: "\uBE68\uAC04\uC0C9\uC744 \uC88B\uC544\uD574\uC694 \uBE68\uAC04\uC0C9
+    \uB9CE\uC774 \uC8FC\uC2DC\uBA74 \uC88B\uC744 \uAC70 \uAC19\uC544\uC694"

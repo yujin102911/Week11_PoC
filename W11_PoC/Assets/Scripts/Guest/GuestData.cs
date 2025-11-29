@@ -20,6 +20,35 @@ public class GuestData : ScriptableObject
     [Tab("주문 정보(신)")]
     [Header("주문 정보")]
     public GuestPattern GuestPattern;
-
+    [Header("긍정 요구")]
+    public P_Request P_Request = P_Request.None;
+    [Header("부정 요구")]
+    public N_Request N_Request = N_Request.None;
+    [Header("요구 텍스트")]
+    [TextArea(3, 10)]
+    public string RequestMessage;
 }
 
+public enum Request_Type
+{
+    None,
+    R,
+    G,
+    B
+}
+
+public enum P_Request
+{
+    None,
+    R,
+    G,
+    B
+}
+
+public enum N_Request
+{
+    None,
+    R,
+    G,
+    B
+}

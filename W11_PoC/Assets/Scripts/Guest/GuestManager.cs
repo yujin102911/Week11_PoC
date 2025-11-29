@@ -15,6 +15,8 @@ public class GuestManager : MonoBehaviour
 
     private Queue<GuestData> _guestQueue = new Queue<GuestData>();
     private Guest _currentGuest;
+    public Guest CurrentGuest => _currentGuest;
+
     private int _currentStage = 0;
 
     private Grid _servingGrid; // 판매대
@@ -229,8 +231,8 @@ public class GuestManager : MonoBehaviour
     {
         Debug.Log("성공: 주문하신 물건이 맞습니다! (판매 완료)");
 
-        _servingGrid.ClearAllCells(); // 그리드 비우기
         OnGuestLeave(_currentGuest, true);
+        _servingGrid.ClearAllCells(); // 그리드 비우기
     }
 
     public void OnGuestLeave(Guest guest, bool isSuccess)
@@ -239,6 +241,12 @@ public class GuestManager : MonoBehaviour
         if (isSuccess)
         {
             int pointed = _currentGuest.CaculatePoint();
+
+            if (_servingGrid.Gold != 0)
+            {
+                pointed = _servingGrid.Gold;
+            }
+            
             GameManager.Instance.GainPoint(pointed);
         }
 
@@ -260,6 +268,11 @@ public class GuestManager : MonoBehaviour
         if (isSuccess)
         {
             int pointed = _currentGuest.CaculatePoint();
+
+            if (_servingGrid.Gold != 0)
+            {
+                pointed = _servingGrid.Gold;
+            }
             GameManager.Instance.GainPoint(pointed);
         }
 

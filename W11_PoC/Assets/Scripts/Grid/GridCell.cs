@@ -639,13 +639,16 @@ public class PlacedBlockInfo
     public Color Color;
     public BlockData SourceData;
     public Grid OwnerGrid; // 현재 속한 그리드
+    public Request_Type requestType; //요구사항 타입
 
-    public PlacedBlockInfo(Vector2Int origin, List<Vector2Int> shape, Color color, BlockData source = null, Grid owner = null)
+    public PlacedBlockInfo(Vector2Int origin, List<Vector2Int> shape, Color color, Request_Type type, BlockData source = null, 
+        Grid owner = null)
     {
         Origin = origin;
         Shape = new List<Vector2Int>(shape);
         Color = color;
         SourceData = source;
         OwnerGrid = owner;
+        requestType = type;
     }
 }
