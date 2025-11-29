@@ -5,6 +5,7 @@ using TMPro;
 public class FreeBlockPanel : MonoBehaviour
 {
     public bool Is_spawn = false;
+    public bool Is_scroll = false;
 
     [Header("프리팹")]
     [SerializeField] private BlockItem blockItemPrefab;
@@ -149,7 +150,23 @@ public class FreeBlockPanel : MonoBehaviour
             spawnSlots.Add(slotRect);
         }
 
+        // Content(=spawnArea)의 높이를 동적으로 변경
+        if(Is_scroll)
+            UpdateContentHeight(rows);
+
         Debug.Log($"스폰 슬롯 {spawnSlots.Count}개 생성됨");
+    }
+
+    private void UpdateContentHeight(int rows)
+    {
+        float totalHeight = startOffset.y + (rows * verticalSpacing);
+
+        // 음수가 되지 않도록 보정
+        totalHeight = Mathf.Abs(totalHeight);
+
+        Vector2 size = spawnArea.sizeDelta;
+        size.y = totalHeight + 150.0f;
+        spawnArea.sizeDelta = size;
     }
 
     /// <summary>
@@ -256,14 +273,41 @@ public class FreeBlockPanel : MonoBehaviour
     /// </summary>
     public bool IsPointerOverSpawnArea(Vector2 screenPos)
     {
+        
+
         // 비활성화 상태면 false 반환
         if (!gameObject.activeInHierarchy) return false;
 
         RectTransform targetArea = returnArea != null ? returnArea : spawnArea;
         if (targetArea == null || !targetArea.gameObject.activeInHierarchy) return false;
 
+        //DebugPointerCheck(targetArea, screenPos);
+
         return RectTransformUtility.RectangleContainsScreenPoint(targetArea, screenPos, uiCamera);
     }
+
+    private void DebugPointerCheck(RectTransform targetArea, Vector2 screenPos)
+    {
+        Debug.Log($"this.activeInHierarchy={gameObject.activeInHierarchy}");
+        if (targetArea == null) { Debug.Log("targetArea IS NULL"); return; }
+        Debug.Log($"targetArea.activeInHierarchy={targetArea.gameObject.activeInHierarchy}");
+        Debug.Log($"targetArea.rect.size={targetArea.rect.size}, anchoredPos={targetArea.anchoredPosition}, pivot={targetArea.pivot}");
+
+        Camera cam = uiCamera;
+        Debug.Log("uiCamera = " + cam);
+
+        // RectTransform의 네 모서리를 스크린 좌표로 출력
+        Vector3[] worldCorners = new Vector3[4];
+        targetArea.GetWorldCorners(worldCorners);
+        for (int i = 0; i < 4; i++)
+        {
+            Vector3 screen = cam != null ? cam.WorldToScreenPoint(worldCorners[i]) : RectTransformUtility.WorldToScreenPoint(null, worldCorners[i]);
+            Debug.Log($"corner[{i}] world={worldCorners[i]} screen={screen}");
+        }
+
+        Debug.Log("pointer screenPos=" + screenPos + ", inRect=" + RectTransformUtility.RectangleContainsScreenPoint(targetArea, screenPos, cam));
+    }
+
 
     /// <summary>
     /// 배치된 블록 정보로 BlockItem 다시 생성

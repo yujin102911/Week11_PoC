@@ -1,7 +1,8 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using System.Collections.Generic;
+using static UnityEngine.GraphicsBuffer;
 
 
 public class BlockItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler, IPointerClickHandler, IDropHandler, IPointerEnterHandler, IPointerExitHandler
@@ -234,8 +235,12 @@ public class BlockItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
 
             foreach (var r in results)
             {
+
+                
+
                 // 2) 드롭된 위치에서 원하는 컴포넌트가 붙은 대상 찾기
                 var target = r.gameObject.GetComponentInParent<FreeBlockPanel>();
+
                 if (target != null
                     && target.gameObject.activeInHierarchy
                     && target.IsPointerOverSpawnArea(Input.mousePosition)
@@ -252,7 +257,9 @@ public class BlockItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
                     return;
                 }
             }
-            
+
+            Debug.Log("못 찾음??");
+
             transform.position = startPosition;
 
             if (_ownerPanel != null)
