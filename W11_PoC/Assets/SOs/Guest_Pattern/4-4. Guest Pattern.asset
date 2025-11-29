@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2b2a8fdc89324b648950f187a5fbfe82, type: 3}
-  m_Name: 2. Guest Pattern
+  m_Name: 4-4. Guest Pattern
   m_EditorClassIdentifier: 
-  width: 1
-  height: 6
+  width: 3
+  height: 5
   _patternGrid:
-    width: 1
-    height: 6
-    data: 010001010101
+    width: 3
+    height: 5
+    data: 010101000001010101010000010101

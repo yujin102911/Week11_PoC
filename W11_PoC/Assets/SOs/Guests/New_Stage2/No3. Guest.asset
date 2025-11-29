@@ -10,14 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5d99303a1919bf148b3a8408faf917c1, type: 3}
-  m_Name: No6. Guest
+  m_Name: No3. Guest
   m_EditorClassIdentifier: 
-  guestID: 06
+  guestID: 03
   guestPrefab: {fileID: 2055473972308317258, guid: 7fba765f06f421c46ad7e5ab1a9acd5d, type: 3}
   patienceTime: 25
   paymentAmount: 800
   orderList:
-  - {fileID: 11400000, guid: 80b5d18de03d8864385a13b1760f864c, type: 2}
-  - {fileID: 11400000, guid: ad38a8fb57dc0224ab28614d7b4409d2, type: 2}
-  - {fileID: 11400000, guid: 1441307a02eb4344c9f117de89ae42a3, type: 2}
+  - {fileID: 11400000, guid: 5aec2278f45ac1a46918094715fa7a70, type: 2}
+  - {fileID: 11400000, guid: f18f329e3b373264b86154b63f13da10, type: 2}
   GuestPattern: {fileID: 11400000, guid: cad8797f775a30b48980fd86e76343c7, type: 2}

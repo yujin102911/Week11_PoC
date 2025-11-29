@@ -13,11 +13,8 @@ MonoBehaviour:
   m_Name: stage1_3
   m_EditorClassIdentifier: 
   blocks:
-  - {fileID: 11400000, guid: 1028bb71c3d025949be98fb6ad775882, type: 2}
-  - {fileID: 11400000, guid: 35b54999bfc8cac46ac29277fde53888, type: 2}
-  - {fileID: 11400000, guid: d5e6b3dd10266e24193f8eabea55cc18, type: 2}
-  - {fileID: 11400000, guid: c53ff62dd11e8f54b982db2e3cf45065, type: 2}
-  - {fileID: 11400000, guid: e067cfeda275dd94fae5684f23650fa4, type: 2}
-  - {fileID: 11400000, guid: 1e3a80bc5e491894690f4c248eea0988, type: 2}
-  - {fileID: 11400000, guid: cb1f073f03f71174abae407b732e71e7, type: 2}
-  - {fileID: 11400000, guid: 80b5d18de03d8864385a13b1760f864c, type: 2}
+  - {fileID: 11400000, guid: a49ffbbf62cd17f46be644d9fad6b25e, type: 2}
+  - {fileID: 11400000, guid: 3b5dc5aa5d44dc04bad6e14a1dd4bb3a, type: 2}
+  - {fileID: 11400000, guid: 28167cee9764e4845bdb19ab31e79c91, type: 2}
+  - {fileID: 11400000, guid: 90ffeff25e753f44f897a1bf0b36b6e3, type: 2}
+  - {fileID: 11400000, guid: 7b0ff7da00948774392086536e29bcde, type: 2}

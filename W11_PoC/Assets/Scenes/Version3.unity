@@ -2779,7 +2779,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8155994622709958153, guid: a2e52bc4a3ab8544f8ee36616f4a8d2c, type: 3}
       propertyPath: _blockDatabases.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8155994622709958153, guid: a2e52bc4a3ab8544f8ee36616f4a8d2c, type: 3}
       propertyPath: '_blockDatabases.Array.data[0]'
@@ -2980,7 +2980,7 @@ MonoBehaviour:
   _blockSpawner: {fileID: 0}
   MaxTime: 300
   CurrentTime: 0
-  MaxStage: 2
+  MaxStage: 4
   CurrentStage: 0
   TotalPoint: 0
   StagePointed: 0
@@ -3015,7 +3015,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stageGuestDBs:
   - {fileID: 11400000, guid: d5bc32cde7059c043a1db851b73f4336, type: 2}
-  - {fileID: 11400000, guid: d5bc32cde7059c043a1db851b73f4336, type: 2}
+  - {fileID: 11400000, guid: 549ac272704aa944795c294abc653040, type: 2}
+  - {fileID: 11400000, guid: 9caeaa0e911c43144adad597ce5dffe5, type: 2}
+  - {fileID: 11400000, guid: 553c93e5c7f416445bf308127a655931, type: 2}
   spawnPoint: {fileID: 1661470666}
   counterPoint: {fileID: 1986701853}
   defaultGuestPrefab: {fileID: 2055473972308317258, guid: 7fba765f06f421c46ad7e5ab1a9acd5d, type: 3}
@@ -9650,16 +9652,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8155994622709958153, guid: a2e52bc4a3ab8544f8ee36616f4a8d2c, type: 3}
       propertyPath: _blockDatabases.Array.size
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8155994622709958153, guid: a2e52bc4a3ab8544f8ee36616f4a8d2c, type: 3}
       propertyPath: '_blockDatabases.Array.data[0]'
       value: 
-      objectReference: {fileID: 11400000, guid: 0010a34c404aa9246904cfa7f692597c, type: 2}
+      objectReference: {fileID: 11400000, guid: f4177cd30c1ef4842b6b720ee9c1836b, type: 2}
     - target: {fileID: 8155994622709958153, guid: a2e52bc4a3ab8544f8ee36616f4a8d2c, type: 3}
       propertyPath: '_blockDatabases.Array.data[1]'
       value: 
-      objectReference: {fileID: 11400000, guid: 0010a34c404aa9246904cfa7f692597c, type: 2}
+      objectReference: {fileID: 11400000, guid: 538e6c917d53a834097b6db640d9a03d, type: 2}
+    - target: {fileID: 8155994622709958153, guid: a2e52bc4a3ab8544f8ee36616f4a8d2c, type: 3}
+      propertyPath: '_blockDatabases.Array.data[2]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 1e5075efbf99ac548bebcba90f8f090c, type: 2}
+    - target: {fileID: 8155994622709958153, guid: a2e52bc4a3ab8544f8ee36616f4a8d2c, type: 3}
+      propertyPath: '_blockDatabases.Array.data[3]'
+      value: 
+      objectReference: {fileID: 11400000, guid: fe51fbd9ca3f8d5488a5fda687617124, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -11126,7 +11136,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8155994622709958153, guid: a2e52bc4a3ab8544f8ee36616f4a8d2c, type: 3}
       propertyPath: _blockDatabases.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8155994622709958153, guid: a2e52bc4a3ab8544f8ee36616f4a8d2c, type: 3}
       propertyPath: '_blockDatabases.Array.data[0]'
@@ -11271,7 +11281,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8155994622709958153, guid: a2e52bc4a3ab8544f8ee36616f4a8d2c, type: 3}
       propertyPath: _blockDatabases.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8155994622709958153, guid: a2e52bc4a3ab8544f8ee36616f4a8d2c, type: 3}
       propertyPath: '_blockDatabases.Array.data[0]'
