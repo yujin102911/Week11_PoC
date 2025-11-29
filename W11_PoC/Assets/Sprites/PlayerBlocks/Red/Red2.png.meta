@@ -1,0 +1,1247 @@
+fileFormatVersion: 2
+guid: d5af7cd3cdab0ce4a97ddec405372343
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -6075554297309627831
+    second: Red2_0
+  - first:
+      213: 381580737908589364
+    second: Red2_1
+  - first:
+      213: 2946328766690639015
+    second: Red2_2
+  - first:
+      213: -8836929754036464257
+    second: Red2_3
+  - first:
+      213: -6722744006229694380
+    second: Red2_4
+  - first:
+      213: -3810905724638483479
+    second: Red2_5
+  - first:
+      213: 4661989437283835809
+    second: Red2_6
+  - first:
+      213: 3877123436338390076
+    second: Red2_7
+  - first:
+      213: -1724461231234424748
+    second: Red2_8
+  - first:
+      213: 3583794996770347871
+    second: Red2_9
+  - first:
+      213: 794508104738065054
+    second: Red2_10
+  - first:
+      213: 5897839478067285225
+    second: Red2_11
+  - first:
+      213: -75183753606755933
+    second: Red2_12
+  - first:
+      213: 4173300271931301658
+    second: Red2_13
+  - first:
+      213: -7437355361871136815
+    second: Red2_14
+  - first:
+      213: -2392274789728947822
+    second: Red2_15
+  - first:
+      213: 8440118668270893044
+    second: Red2_16
+  - first:
+      213: 8979782561339376293
+    second: Red2_17
+  - first:
+      213: 1519738359398349090
+    second: Red2_18
+  - first:
+      213: -6265875236078629610
+    second: Red2_19
+  - first:
+      213: -6054676743823664519
+    second: Red2_20
+  - first:
+      213: -6759686423783692729
+    second: Red2_21
+  - first:
+      213: -3428093600056655854
+    second: Red2_22
+  - first:
+      213: 2135660525106736705
+    second: Red2_23
+  - first:
+      213: 427952842823168486
+    second: Red2_24
+  - first:
+      213: -5852143628201326837
+    second: Red2_25
+  - first:
+      213: -222086611734254024
+    second: Red2_26
+  - first:
+      213: -5336515529673712376
+    second: Red2_27
+  - first:
+      213: -6552939138147753857
+    second: Red2_28
+  - first:
+      213: -490198706903593261
+    second: Red2_29
+  - first:
+      213: -4404586723091919152
+    second: Red2_30
+  - first:
+      213: 2072602487510538798
+    second: Red2_31
+  - first:
+      213: -3129066166008940969
+    second: Red2_32
+  - first:
+      213: -6909809338329438006
+    second: Red2_33
+  - first:
+      213: 6028004382539844719
+    second: Red2_34
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Red2_0
+      rect:
+        serializedVersion: 2
+        x: 151
+        y: 511
+        width: 54
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 94af2476e8b4faba0800000000000000
+      internalID: -6075554297309627831
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Red2_1
+      rect:
+        serializedVersion: 2
+        x: 206
+        y: 511
+        width: 54
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4334c20d8a5ab4500800000000000000
+      internalID: 381580737908589364
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Red2_2
+      rect:
+        serializedVersion: 2
+        x: 295
+        y: 503
+        width: 54
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7ac3c1a276673e820800000000000000
+      internalID: 2946328766690639015
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Red2_3
+      rect:
+        serializedVersion: 2
+        x: 348
+        y: 503
+        width: 54
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f759391753bec5580800000000000000
+      internalID: -8836929754036464257
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Red2_4
+      rect:
+        serializedVersion: 2
+        x: 548
+        y: 503
+        width: 54
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 458eac8e1f304b2a0800000000000000
+      internalID: -6722744006229694380
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Red2_5
+      rect:
+        serializedVersion: 2
+        x: 785
+        y: 509
+        width: 54
+        height: 55
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9ebab6a3f61fc1bc0800000000000000
+      internalID: -3810905724638483479
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Red2_6
+      rect:
+        serializedVersion: 2
+        x: 839
+        y: 457
+        width: 54
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1af1de361b6b2b040800000000000000
+      internalID: 4661989437283835809
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Red2_7
+      rect:
+        serializedVersion: 2
+        x: 1035
+        y: 511
+        width: 54
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c34aa45393f4ec530800000000000000
+      internalID: 3877123436338390076
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Red2_8
+      rect:
+        serializedVersion: 2
+        x: 1088
+        y: 458
+        width: 54
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 450e65395ab7118e0800000000000000
+      internalID: -1724461231234424748
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Red2_9
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 455
+        width: 54
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f5b9152df823cb130800000000000000
+      internalID: 3583794996770347871
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Red2_10
+      rect:
+        serializedVersion: 2
+        x: 151
+        y: 455
+        width: 54
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e9ac41a69e8a60b00800000000000000
+      internalID: 794508104738065054
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Red2_11
+      rect:
+        serializedVersion: 2
+        x: 348
+        y: 447
+        width: 54
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9ecc978d1c559d150800000000000000
+      internalID: 5897839478067285225
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Red2_12
+      rect:
+        serializedVersion: 2
+        x: 404
+        y: 447
+        width: 54
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3a9836146c4e4fef0800000000000000
+      internalID: -75183753606755933
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Red2_13
+      rect:
+        serializedVersion: 2
+        x: 493
+        y: 449
+        width: 54
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a1f91897c7a8ae930800000000000000
+      internalID: 4173300271931301658
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Red2_14
+      rect:
+        serializedVersion: 2
+        x: 548
+        y: 449
+        width: 54
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1d7f25304b439c890800000000000000
+      internalID: -7437355361871136815
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Red2_15
+      rect:
+        serializedVersion: 2
+        x: 603
+        y: 449
+        width: 54
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2917519e0ceecced0800000000000000
+      internalID: -2392274789728947822
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Red2_16
+      rect:
+        serializedVersion: 2
+        x: 894
+        y: 404
+        width: 54
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4f7fd6c0633512570800000000000000
+      internalID: 8440118668270893044
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Red2_17
+      rect:
+        serializedVersion: 2
+        x: 1143
+        y: 406
+        width: 54
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5a281e0a9a89e9c70800000000000000
+      internalID: 8979782561339376293
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Red2_18
+      rect:
+        serializedVersion: 2
+        x: 946
+        y: 352
+        width: 53
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 22939776cf1371510800000000000000
+      internalID: 1519738359398349090
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Red2_19
+      rect:
+        serializedVersion: 2
+        x: 1143
+        y: 350
+        width: 54
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 61dcd9abba32b09a0800000000000000
+      internalID: -6265875236078629610
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Red2_20
+      rect:
+        serializedVersion: 2
+        x: 124
+        y: 282
+        width: 54
+        height: 55
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 97a529e949779fba0800000000000000
+      internalID: -6054676743823664519
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Red2_21
+      rect:
+        serializedVersion: 2
+        x: 179
+        y: 283
+        width: 54
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 746a75d0305c032a0800000000000000
+      internalID: -6759686423783692729
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Red2_22
+      rect:
+        serializedVersion: 2
+        x: 287
+        y: 230
+        width: 54
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 21045d79807fc60d0800000000000000
+      internalID: -3428093600056655854
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Red2_23
+      rect:
+        serializedVersion: 2
+        x: 340
+        y: 230
+        width: 54
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 14eafcfaee363ad10800000000000000
+      internalID: 2135660525106736705
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Red2_24
+      rect:
+        serializedVersion: 2
+        x: 393
+        y: 284
+        width: 54
+        height: 53
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6e1f719d7d460f500800000000000000
+      internalID: 427952842823168486
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Red2_25
+      rect:
+        serializedVersion: 2
+        x: 393
+        y: 230
+        width: 54
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b078e7a406209cea0800000000000000
+      internalID: -5852143628201326837
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Red2_26
+      rect:
+        serializedVersion: 2
+        x: 493
+        y: 242
+        width: 54
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 83ea53e376dfaecf0800000000000000
+      internalID: -222086611734254024
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Red2_27
+      rect:
+        serializedVersion: 2
+        x: 546
+        y: 242
+        width: 54
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 80d517b5663e0f5b0800000000000000
+      internalID: -5336515529673712376
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Red2_28
+      rect:
+        serializedVersion: 2
+        x: 599
+        y: 242
+        width: 54
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f70e2f3a2984f05a0800000000000000
+      internalID: -6552939138147753857
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Red2_29
+      rect:
+        serializedVersion: 2
+        x: 653
+        y: 242
+        width: 54
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3dec7ad8fd67239f0800000000000000
+      internalID: -490198706903593261
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Red2_30
+      rect:
+        serializedVersion: 2
+        x: 124
+        y: 227
+        width: 54
+        height: 53
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0de44bb36b3cfd2c0800000000000000
+      internalID: -4404586723091919152
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Red2_31
+      rect:
+        serializedVersion: 2
+        x: 179
+        y: 227
+        width: 54
+        height: 53
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e2a18a43bfc53cc10800000000000000
+      internalID: 2072602487510538798
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Red2_32
+      rect:
+        serializedVersion: 2
+        x: 877
+        y: 222
+        width: 53
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 756f75886e25394d0800000000000000
+      internalID: -3129066166008940969
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Red2_33
+      rect:
+        serializedVersion: 2
+        x: 930
+        y: 169
+        width: 54
+        height: 106
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ac8623b340d6b10a0800000000000000
+      internalID: -6909809338329438006
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Red2_34
+      rect:
+        serializedVersion: 2
+        x: 985
+        y: 116
+        width: 54
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f6c09c55c06c7a350800000000000000
+      internalID: 6028004382539844719
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Red2_35
+      rect:
+        serializedVersion: 2
+        x: 82
+        y: 445
+        width: 185
+        height: 137
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 583c16e65d69c8c4c911e857f87f61a2
+      internalID: 1780140471
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Red2_36
+      rect:
+        serializedVersion: 2
+        x: 282
+        y: 427
+        width: 187
+        height: 150
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7f736743a7116ed45bb724b1481077b8
+      internalID: -1194851732
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Red2_37
+      rect:
+        serializedVersion: 2
+        x: 483
+        y: 431
+        width: 190
+        height: 145
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f6df60e2192760843ae9af882b434e24
+      internalID: 2061150119
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Red2_38
+      rect:
+        serializedVersion: 2
+        x: 110
+        y: 213
+        width: 136
+        height: 139
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 71c2f078d23e61644ad9bc1380af4735
+      internalID: 1442924650
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Red2_39
+      rect:
+        serializedVersion: 2
+        x: 271
+        y: 211
+        width: 191
+        height: 139
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 42ad84b9a471ecc4b99ae59d4242bf4d
+      internalID: -1700791971
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Red2_40
+      rect:
+        serializedVersion: 2
+        x: 478
+        y: 224
+        width: 249
+        height: 86
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5cd176510accb444d8b148cbecad2a4a
+      internalID: 1903456494
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Red2_41
+      rect:
+        serializedVersion: 2
+        x: 770
+        y: 339
+        width: 238
+        height: 241
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c643acfe3782dfa4e88deacd2cdcde09
+      internalID: 1234634283
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Red2_42
+      rect:
+        serializedVersion: 2
+        x: 1023
+        y: 340
+        width: 182
+        height: 241
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 71aee7bc32468994c9d0b539b7a8e9d0
+      internalID: -1209550945
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Red2_43
+      rect:
+        serializedVersion: 2
+        x: 862
+        y: 102
+        width: 189
+        height: 186
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8e56db1220d6172489f29cf4c3a871a2
+      internalID: 1600178478
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: b40fb52f46101ea4d8d1034c35ceade7
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Red2_0: -6075554297309627831
+      Red2_1: 381580737908589364
+      Red2_10: 794508104738065054
+      Red2_11: 5897839478067285225
+      Red2_12: -75183753606755933
+      Red2_13: 4173300271931301658
+      Red2_14: -7437355361871136815
+      Red2_15: -2392274789728947822
+      Red2_16: 8440118668270893044
+      Red2_17: 8979782561339376293
+      Red2_18: 1519738359398349090
+      Red2_19: -6265875236078629610
+      Red2_2: 2946328766690639015
+      Red2_20: -6054676743823664519
+      Red2_21: -6759686423783692729
+      Red2_22: -3428093600056655854
+      Red2_23: 2135660525106736705
+      Red2_24: 427952842823168486
+      Red2_25: -5852143628201326837
+      Red2_26: -222086611734254024
+      Red2_27: -5336515529673712376
+      Red2_28: -6552939138147753857
+      Red2_29: -490198706903593261
+      Red2_3: -8836929754036464257
+      Red2_30: -4404586723091919152
+      Red2_31: 2072602487510538798
+      Red2_32: -3129066166008940969
+      Red2_33: -6909809338329438006
+      Red2_34: 6028004382539844719
+      Red2_35: 1780140471
+      Red2_36: -1194851732
+      Red2_37: 2061150119
+      Red2_38: 1442924650
+      Red2_39: -1700791971
+      Red2_4: -6722744006229694380
+      Red2_40: 1903456494
+      Red2_41: 1234634283
+      Red2_42: -1209550945
+      Red2_43: 1600178478
+      Red2_5: -3810905724638483479
+      Red2_6: 4661989437283835809
+      Red2_7: 3877123436338390076
+      Red2_8: -1724461231234424748
+      Red2_9: 3583794996770347871
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
