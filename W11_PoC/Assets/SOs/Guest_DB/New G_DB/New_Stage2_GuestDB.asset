@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1cfcca6bba8d7ea4b9140fe981e6a737, type: 3}
-  m_Name: New_Stage1_GuestDB
+  m_Name: New_Stage2_GuestDB
   m_EditorClassIdentifier: Assembly-CSharp::GuestDatabase
   guests:
-  - {fileID: 11400000, guid: f4d398d97cfbc9946b061fb0a8ec757f, type: 2}
-  - {fileID: 11400000, guid: b651dab3acbd3864b8d92f33f6026e46, type: 2}
-  - {fileID: 11400000, guid: 2296852db6874f542984dc26b2502d26, type: 2}
+  - {fileID: 11400000, guid: fb0c83679f9ab544ea046aa331acb5ca, type: 2}
+  - {fileID: 11400000, guid: 7562795880d64ec428440b953734ee5c, type: 2}
+  - {fileID: 11400000, guid: 88d4b35efecf5474fb55fd16cb1f44c6, type: 2}

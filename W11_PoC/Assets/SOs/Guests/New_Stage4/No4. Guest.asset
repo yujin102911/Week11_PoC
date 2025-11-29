@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5d99303a1919bf148b3a8408faf917c1, type: 3}
-  m_Name: No3. Guest
+  m_Name: No4. Guest
   m_EditorClassIdentifier: 
   guestID: 03
   guestPrefab: {fileID: 2055473972308317258, guid: 7fba765f06f421c46ad7e5ab1a9acd5d, type: 3}
@@ -19,4 +19,4 @@ MonoBehaviour:
   orderList:
   - {fileID: 11400000, guid: 5aec2278f45ac1a46918094715fa7a70, type: 2}
   - {fileID: 11400000, guid: f18f329e3b373264b86154b63f13da10, type: 2}
-  GuestPattern: {fileID: 11400000, guid: 84f9e8cbf9b5c4e49a1d51467a4429d4, type: 2}
+  GuestPattern: {fileID: 11400000, guid: 9487b887e1521244e905534b1a85e9e5, type: 2}
